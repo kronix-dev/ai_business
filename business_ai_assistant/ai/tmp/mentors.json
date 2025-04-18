@@ -1,0 +1,32 @@
+[
+    {
+        "id":1,
+        "name":"Hassan said",
+        "experience":"5 years",
+        "industry":"mechanics",
+        "skills":[
+            "Marketing expert",
+            "Technical expert",
+            ""
+        ],
+        "qualifications":[
+            "Bachelor degree in business management"
+        ]
+    },
+    {
+        "id": 2,
+        "name":"Hassan said",
+        "experience":"5 years",
+        "industry":"mechanics",
+        "skills":[
+            "Marketing expert",
+            "Technical expert",
+            "Sales management expert",
+            "Tax management"
+        ],
+        "qualifications":[
+            "Bachelor degree in computer science",
+            "PHD in Business management"
+        ]
+    }
+]
