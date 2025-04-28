@@ -13,8 +13,8 @@ import BusinessService from "../../services/business";
 export default function BusinessOwnerDashboard() {
     const {business, setBusiness} = useUserContext()
     const [hasProfile, setHas] = React.useState(0)
-  React.useEffect(() => {
-    BusinessService.getProfile().then((r)=>{
+    const getProfile = ()=>{
+      BusinessService.getProfile().then((r)=>{
         if(r.hasProfile){
             setBusiness( r.data)
             setHas(1)
@@ -23,21 +23,26 @@ export default function BusinessOwnerDashboard() {
             setHas(2)
         }
     })
+    }
+  React.useEffect(() => {
+    getProfile
   }, []);
   return (
     <div>
-      {hasProfile===1?<BusinessDashboard />:hasProfile===2?<BusinessProfileInit/>:null}
+      {hasProfile===1?<BusinessDashboard />:hasProfile===2?<BusinessProfileInit onRefresh={getProfile}/>:null}
     </div>
   );
 }
 
-function BusinessProfileInit() {
+function BusinessProfileInit({onRefresh}) {
   const { user } = useUserContext();
   const [open, setOpen] = React.useState();
   const [cats, setCats] = React.useState([]);
   const [data, setData] = React.useState({});
   const onCreate = ()=>{
     BusinessService.createProfile(data)
+    onRefresh()
+    setOpen(false)
   }
   const businessProfileForm = [
     {

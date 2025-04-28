@@ -68,7 +68,7 @@ const mentorForm = [
       {
         type: 'multiple-select',
         placeholder: 'Qualifications',
-        name: 'qualificatios',
+        name: 'qualifications',
         options: [],
         grid:{
             xs: 12, md: 8
@@ -77,7 +77,7 @@ const mentorForm = [
       {
         type: 'text',
         placeholder: 'Years of experience',
-        name: 'experience_years',
+        name: 'experience',
         options: [],
         grid:{
             xs: 12, md: 8

@@ -6,14 +6,14 @@ from base.models import BusinessOwnerProfile
 class MentorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='mentor_profile')
     bio = models.TextField(blank=True, null=True)
-    industry_expertise = models.JSONField(default={})
-    mentorship_areas = models.JSONField(default={})
-    availability = models.JSONField(default={}) # e.g., days, times, weekly hours
+    industry_expertise = models.JSONField(blank=True, null=True)
+    mentorship_areas = models.JSONField(blank=True, null=True)
+    availability = models.JSONField(blank=True, null=True) # e.g., days, times, weekly hours
     mentoring_style = models.TextField()
     past_mentorship_experience = models.TextField(blank=True, null=True)
-    skills = models.JSONField(blank=True, null=True, default={})
+    skills = models.JSONField(blank=True, null=True)
     personality_traits = models.TextField(blank=True, null=True) #could be a JSON field.
-    qualifications = models.JSONField(blank=True, null=True,default={})
+    qualifications = models.JSONField(blank=True, null=True)
     testimonials = models.TextField(blank=True, null=True)
     rate = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True) #if applicable
     created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)

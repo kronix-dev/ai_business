@@ -12,35 +12,39 @@ class FindMentor(APIView):
         status=True
         match = []
         message = ''
+        mentor =[]
         
-        
+        res = []
+        criteria =""
+        mat_Res = ""
         try:
             mentors = MentorProfile.objects.all()
             
             for i in mentors:
-                mestr = 'id: '+ i.id
-                mestr += 'name: '+ i.user.first_name +' '+i.user.last_name+',\n'
-                mestr += 'industry: '+ i.industry_expertise+',\n'
-                mestr += 'skills: '+ ",".join(json.loads(i.skills,object_hook=lambda d: SimpleNamespace(**d)))+',\n'
-                mestr += 'experience: '+ i.past_mentorship_experience+',\n'
-                mestr += 'qualifications: '+ i.qualifications+'.\n'
-                
+                mestr = 'id: '+str(i.id) 
+                mestr += 'name: '+ i.user.first_name +' '+i.user.last_name+','
+                mestr += 'industry: '+",".join(i.industry_expertise)+','
+                mestr += 'skills: '+ ",".join(i.skills)+','
+                mestr += 'experience: '+ str(i.past_mentorship_experience)+', '
+                mestr += 'qualifications: '+ ",".join(i.qualifications)+'. '
                 mentorString += mestr
+            criteria = "skills of the mentor: " + ",".join(rq['skills']) +'. \n'
+            criteria += "Experience : " + ",".join(rq['experience']) + '. \n'
+            criteria +="qualifications : " + ",".join(rq['qualifications']) + '. \n'
+            criteria += "industry : " + ",".join(rq['industry']) + '.'
+            criteria += "other criteriass : " + '. \n'
+            mat_Res = mentorMatching(criteria,mentorString)
+            match  = json.loads(mat_Res)
+            for i in match:
+                mentor = {'mentor':getMentor(MentorProfile.objects.get(id=i['mentor_id'])),'reason': i['reason'], 'score':i['score']}
+                res.append(mentor)
             
-            
-            criteria = "skills of the mentor: " + ",".join(rq['skills']) +', \n'
-            criteria += +"Experience : " + ",".join(rq['experience']) + ', \n'
-            criteria += +"qualifications : " + ",".join(rq['qualifications']) + ', \n'
-            criteria += +"industry : " + ",".join(rq['qualifications']) + '. \n'
-            criteria += +"other criteriass : " + ",".join(rq['other_criteria']) + '. \n'
-            
-            match  = mentorMatching(criteria,mentorString)
         except Exception as e:
             message = str(e)
             status = False
             
         return Response({
-            'data': match,
+            'data': mentor,
             'status': status,
             'message': message
         })
@@ -51,15 +55,7 @@ class GetMyProfileView(APIView):
         message = 'ok'
         pf = {}
         try:
-            p = MentorProfile.objects.get(user= request.user)
-            pf['bio'] = p.bio
-            pf['availability'] = p.availability
-            pf['area_expert'] = p.mentorship_areas
-            pf['industry'] = p.industry_expertise
-            pf['skills'] = p.skills
-            pf['qualifications'] = p.qualifications
-            pf['experience'] = p.past_mentorship_experience
-            
+            pf = getMentor(MentorProfile.objects.get(user= request.user))
         except Exception as e:
             message = str(e)
             status = False
@@ -68,3 +64,15 @@ class GetMyProfileView(APIView):
             'message': message,
             'data': pf
         })
+        
+def getMentor(p):
+    pf = {}
+    
+    pf['bio'] = p.bio
+    pf['availability'] = p.availability
+    pf['area_expert'] = p.mentorship_areas
+    pf['industry'] = p.industry_expertise
+    pf['skills'] = p.skills
+    pf['qualifications'] = p.qualifications
+    pf['experience'] = p.past_mentorship_experience
+    return pf

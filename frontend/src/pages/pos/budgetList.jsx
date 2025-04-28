@@ -138,33 +138,7 @@ export default function BudgetList({ columns = [], rows = [] }) {
         }}
         rows={data}
       />
-      <KModal
-        setOpen={setOpen}
-        open={open}
-        title="Create budget"
-        onOk={() => {
-          Budgeting.createBudget(formData);
-          setOpen(false);
-          let p = data;
-          let f = formData;
-          f["category"] = cats.filter((v) => v.id == f["category"]).name;
-          p.push(formData);
-          setData(p);
-        }}
-      >
-        <KForm
-          showLabels={true}
-          onChange={(data) => {
-            setData(data);
-          }}
-          onFormChange={(form) => {
-            setFormData(form);
-          }}
-          form={addRevenueInput}
-          showSubmitButton={false}
-          submitText="Save"
-        />
-      </KModal>
+      
     </div>
   );
 }

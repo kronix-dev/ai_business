@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { AuthService } from "../../services/auth";
 
 export default function SignupPage() {
+  
   const signupForm = [
     {
       type: "row",
@@ -26,10 +27,13 @@ export default function SignupPage() {
     { type: "email", placeholder: "Email address", name: "email" },
     { type: "password", placeholder: "Password", name: "password" },
   ];
-  const signUp = (dat) => {
-    AuthService.signUp(dat).then((r) => {});
-  };
   const nav = useNavigate();
+  const signUp = (dat) => {
+    AuthService.signUp(dat).then((r) => {
+      alert("Your account has been created successfully, Proceed to sign in")
+      nav('/login')
+    });
+  };
   return (
     <div style={{}}>
       <Row>

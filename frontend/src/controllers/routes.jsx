@@ -16,6 +16,9 @@ import MyMentors from "../pages/mentorship/mymentors";
 import MentorshipDashboard from "../pages/mentorship/mentorshipDashboard";
 import MentorDashboardPage from "../pages/dashboard/mentorDashboard";
 import MenteeList from "../pages/mentorship/menteeList";
+import ProjectDashboard from "../windows/projectDashboard";
+import ProjectList from "../pages/projectManagement/projects";
+import MailList from "../pages/projectManagement/mailList";
 
 export default function Routes() {
   return useRoutes([
@@ -35,6 +38,15 @@ export default function Routes() {
         { element: <MentorshipDashboard />, path: "mentorship" },
         { element: <NotFound />, path: "*" },
       ],
+    },
+    {
+      path: 'project_management',
+      element: <ProjectDashboard/>,
+      children:[
+        {element: <ProjectList/>, path:"projects"},
+        {element: <MailList/>, path:"mail"},
+        { element: <NotFound />, path: "*" },
+      ]
     },
     {
       element: <Mentordashboard />,
