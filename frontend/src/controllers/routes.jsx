@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRoutes } from "react-router";
+import { Navigate, useRoutes } from "react-router";
 import Mentordashboard from "../windows/mentordashboard";
 import RevenueList from "../pages/pos/revenuesList";
 import Userdashboard from "../windows/userdashboard";
@@ -23,6 +23,7 @@ import MailList from "../pages/projectManagement/mailList";
 export default function Routes() {
   return useRoutes([
     { path: "/", element: <LandingPage />, children:[
+        {element:<Navigate to={"logun"}/>},
         {element: <LoginPage/>, path:'login'},
         {element: <SignupPage/>, path:'signup'},
         {element: <ChooseRole/>, path:'default'}
