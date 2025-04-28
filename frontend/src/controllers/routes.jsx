@@ -23,7 +23,7 @@ import MailList from "../pages/projectManagement/mailList";
 export default function Routes() {
   return useRoutes([
     { path: "/", element: <LandingPage />, children:[
-        {element:<Navigate to={"logun"}/>},
+        {element:<Navigate to={"login"}/>, path:"/"},
         {element: <LoginPage/>, path:'login'},
         {element: <SignupPage/>, path:'signup'},
         {element: <ChooseRole/>, path:'default'}
