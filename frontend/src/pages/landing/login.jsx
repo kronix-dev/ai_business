@@ -16,7 +16,6 @@ export default function LoginPage() {
     AuthService.login(data.username,data.password).then((r)=>{
       console.log(r)
       if(r){
-        
         AuthService.getUser().then((r)=>{
           setUser(r.data)
           nav('/'+r.data.group[0])

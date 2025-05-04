@@ -25,7 +25,7 @@ export default function BusinessOwnerDashboard() {
     })
     }
   React.useEffect(() => {
-    getProfile
+    getProfile()
   }, []);
   return (
     <div>
@@ -126,11 +126,7 @@ function BusinessProfileInit({onRefresh}) {
       type: "multiple-select",
       placeholder: "Goals",
       name: "goals",
-      options: [
-        { label: "1 employee", value: "1" },
-        { label: "2 employees", value: "2-4" },
-        { label: "5 - 10 employees", value: "5-10" },
-      ],
+      options:[],
     },
   ];
   const onChange = (d) => {

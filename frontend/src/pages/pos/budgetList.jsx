@@ -21,10 +21,7 @@ export default function BudgetList({ columns = [], rows = [] }) {
       type: "text",
       placeholder: "Title",
       name: "name",
-      grid: {
-        sm: 24,
-        md: 24,
-      },
+      
     },
     {
       type: "row",
@@ -62,10 +59,7 @@ export default function BudgetList({ columns = [], rows = [] }) {
       placeholder: "description",
       name: "budget_items",
       itemText:"Budget item ",
-      grid: {
-        sm: 24,
-        md: 24,
-      },
+      
       child: {
         type: "row",
         children: [
@@ -138,7 +132,33 @@ export default function BudgetList({ columns = [], rows = [] }) {
         }}
         rows={data}
       />
-      
+       <KModal
+        setOpen={setOpen}
+        open={open}
+        title="Create budget"
+        onOk={() => {
+          Budgeting.createBudget(formData);
+          setOpen(false);
+          let p = data;
+          let f = formData;
+          f["category"] = cats.filter((v) => v.id == f["category"]).name;
+          p.push(formData);
+          setData(p);
+        }}
+      >
+        <KForm
+          showLabels={true}
+          onChange={(data) => {
+            setData(data);
+          }}
+          onFormChange={(form) => {
+            setFormData(form);
+          }}
+          form={addRevenueInput}
+          showSubmitButton={false}
+          submitText="Save"
+        />
+      </KModal>
     </div>
   );
 }

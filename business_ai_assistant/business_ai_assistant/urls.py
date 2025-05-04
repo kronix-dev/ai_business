@@ -22,13 +22,14 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-from app.createviews import SignUpView, UpdateRoleView
+from app.createviews import SignUpView, UpdateRoleView, UpdatePassword
 from app.readviews import UserDetails
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/token", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/auth/signup", SignUpView.as_view(), name="signup"),
+    path("api/auth/changePassword", UpdatePassword.as_view(), name="update_password"),
     path("api/auth/updateRole", UpdateRoleView.as_view(), name="update_role"),
     path("api/auth/user", UserDetails.as_view(), name="getUser"),
     path("api/budgeting/", include("budgeting.urls")),

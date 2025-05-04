@@ -14,38 +14,51 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import * as React from "react";
-
+import { useForm, Controller } from "react-hook-form";
 export default function KForm({
   form,
-  onSubmit,
+  onSubmit =()=>{alert("sd")},
   submitText = "submit",
-  onFormChange,
+  onFormChange = () => {},
   showLabels = false,
   showSubmitButton = false,
+  defaultValues = {},
 }) {
   const [fieldData, setFieldData] = React.useState({});
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: defaultValues,
+  });
   const onChange = (e, v) => {
     let f = fieldData;
     f[e] = v;
     onFormChange(f);
     setFieldData(f);
-    console.log(f)
+    console.log(f);
   };
 
   return (
     <Form layout="vertical">
       {form.map((prop) =>
-        !["row","pair"].includes(prop.type) ? (
+        !["row", "pair"].includes(prop.type) ? (
           <Form.Item label={showLabels ? prop.placeholder : null}>
             <GetInput
               onChange={onChange}
               showLabels={showLabels}
+              control={control}
+              errors={errors}
               type={prop.type}
               data={prop}
             />
           </Form.Item>
         ) : (
           <GetInput
+            errors={errors}
+            control={control}
             showLabels={showLabels}
             onChange={onChange}
             type={prop.type}
@@ -56,7 +69,10 @@ export default function KForm({
       {showSubmitButton ? (
         <Button
           onClick={() => {
-            onSubmit(fieldData);
+            onSubmit(fieldData)
+            handleSubmit(onSubmit,(erros)=>{
+              alert(erros.root.message)
+            });
           }}
           type="primary"
         >
@@ -67,32 +83,58 @@ export default function KForm({
   );
 }
 
-function GetInput({ type, data, showLabels, onChange }) {
-  switch (type) {
-    case "checkbox":
-      return <KCheckbox data={data} onChange={onChange}/>
-    case "pair":
-      return <PairInput onChange={onChange} showLabels={showLabels} data={data} />;
-    case "date":
-      return <KDatePicker onChange={onChange} data={data} />;
-    case "text":
-    case "number":
-    case "email":
-    case "password":
-      return <TextInput onChange={onChange} data={data} />;
-    case "textarea":
-      return <KTextArea onChange={onChange} data={data} />;
-    case "autocomplete":
-      return <KAutoComplete onChange={onChange} data={data} />;
-    case "select":
-      return <SelectInput onChange={onChange} data={data} />;
-    case "multiple-select":
-      return <MultipleSelectInput onChange={onChange} data={data} />;
-    case "row":
-      return <KRow onChange={onChange} data={data} showLabels={showLabels} />;
-    default:
-      return <></>;
-  }
+function GetInput({ type, data, showLabels, onChange, control, errors }) {
+  const InputType = () => {
+    switch (type) {
+      case "checkbox":
+        return <KCheckbox data={data} onChange={onChange} />;
+      case "pair":
+        return (
+          <PairInput onChange={onChange} showLabels={showLabels} data={data} errors={errors} control={control} />
+        );
+      case "date":
+        return <KDatePicker onChange={onChange} data={data} />;
+      case "text":
+      case "number":
+      case "email":
+      case "password":
+        return <TextInput onChange={onChange} data={data} />;
+      case "textarea":
+        return <KTextArea onChange={onChange} data={data} />;
+      case "autocomplete":
+        return <KAutoComplete onChange={onChange} data={data} />;
+      case "select":
+        return <SelectInput onChange={onChange} data={data} />;
+      case "multiple-select":
+        return <MultipleSelectInput onChange={onChange} data={data} />;
+      case "row":
+        return (
+          <KRow
+            onChange={onChange}
+            data={data}
+            control={control}
+            errors={errors}
+            showLabels={showLabels}
+          />
+        );
+      default:
+        return <></>;
+    }
+  };
+
+  return (
+    <div>
+      <Controller
+        name={data.name !== undefined ? data.name : "d" + Date.now().toString()}
+        
+        control={control}
+        {...data}
+        render={({ field: { value }, fieldState: {} }) => (
+          <InputType />
+        )}
+      />
+    </div>
+  );
 }
 
 function TextInput({ data, onChange = (e, v) => {} }) {
@@ -103,18 +145,25 @@ function TextInput({ data, onChange = (e, v) => {} }) {
         onChange(data.name, v.target.value);
       }}
       type={data.type}
+      id={data.name}
       name={data.name}
     />
   );
 }
 
-function KCheckbox({data,onChange}){
-  return(
+function KCheckbox({ data, onChange }) {
+  return (
     <Space>
-      <Checkbox title={data.name} onChange={(c)=>{onChange(data.name, c.target.checked)}}/>
+      <Checkbox
+        id={data.name}
+        title={data.name}
+        onChange={(c) => {
+          onChange(data.name, c.target.checked);
+        }}
+      />
       <Typography>{data.placeholder}</Typography>
     </Space>
-  )
+  );
 }
 function KDatePicker({ data, onChange }) {
   return (
@@ -122,7 +171,7 @@ function KDatePicker({ data, onChange }) {
       style={{ width: "100%" }}
       placeholder={data.placeholder}
       onChange={(v) => {
-        onChange(data.name, v.format('YYYY-MM-DD'));
+        onChange(data.name, v.format("YYYY-MM-DD"));
       }}
       name={data.name}
     />
@@ -172,7 +221,10 @@ function KAutoComplete({ data, onChange = (e, v) => {} }) {
   console.log(data);
   return (
     <AutoComplete
-      options={data.options.map((p,key)=>({label: p.label, value:p.label}))}
+      options={data.options.map((p, key) => ({
+        label: p.label,
+        value: p.label,
+      }))}
       key={"asd"}
       tokenSeparators={[","]}
       maxCount={90}
@@ -183,13 +235,19 @@ function KAutoComplete({ data, onChange = (e, v) => {} }) {
     />
   );
 }
-function KRow({ data, showLabels, onChange }) {
+function KRow({ data, showLabels, onChange, control, errors }) {
   return (
     <Row>
       {data.children.map((item, key) => (
         <Col style={{ padding: 3 }} md={item.grid.md} xs={item.grid.xs}>
           <Form.Item label={showLabels ? item.placeholder : null}>
-            <GetInput onChange={onChange} type={item.type} data={item} />
+            <GetInput
+              onChange={onChange}
+              type={item.type}
+              data={item}
+              errors={errors}
+              control={control}
+            />
           </Form.Item>
         </Col>
       ))}
@@ -197,7 +255,7 @@ function KRow({ data, showLabels, onChange }) {
   );
 }
 
-function PairInput({ data, showLabels, onChange }) {
+function PairInput({ data, showLabels, onChange,control, errors }) {
   const [count, setCount] = React.useState([{}]);
   const [, forceUpdate] = React.useState();
   const increment = () => {
@@ -207,33 +265,54 @@ function PairInput({ data, showLabels, onChange }) {
     forceUpdate({});
   };
   const decrement = (key) => {
-    let c = count
-    c.splice(key)
+    let c = count;
+    c.splice(key);
     setCount(c);
   };
-  const onDataChange = (name,value,key)=>{
-    let c = count 
-    c[key][name] = value
-    setCount(c)
-    onChange(data.name, c)
-  }
+  const onDataChange = (name, value, key) => {
+    let c = count;
+    c[key][name] = value;
+    setCount(c);
+    onChange(data.name, c);
+  };
   return (
     <div>
-      {count.map((p,key) => (
+      {count.map((p, key) => (
         <Row>
           <Col xs={24}>
-          <Typography ><strong>{data.itemText} {key+1}</strong></Typography></Col>
-        <Col xs={21}>
-          <GetInput onChange={(e,v)=>{onDataChange(e,v,key)}} type={data.child.type} showLabels={showLabels} data={data.child} />
-        </Col>
-        <Col xs={3}>
-        <Form.Item label={showLabels ? " " : null}>
-          <Button onClick={()=>{decrement(key)}} danger type="primary" style={{marginTop:3}}>
-            <MinusCircleOutlined />
-          </Button>
-        </Form.Item>
-        </Col>
-      </Row>
+            <Typography>
+              <strong>
+                {data.itemText} {key + 1}
+              </strong>
+            </Typography>
+          </Col>
+          <Col xs={21}>
+            <GetInput
+              onChange={(e, v) => {
+                onDataChange(e, v, key);
+              }}
+              type={data.child.type}
+              showLabels={showLabels}
+              data={data.child}
+              control={control}
+              errors={errors}
+            />
+          </Col>
+          <Col xs={3}>
+            <Form.Item label={showLabels ? " " : null}>
+              <Button
+                onClick={() => {
+                  decrement(key);
+                }}
+                danger
+                type="primary"
+                style={{ marginTop: 3 }}
+              >
+                <MinusCircleOutlined />
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
       ))}
       <Space direction="vertical">
         <Button onClick={increment}>

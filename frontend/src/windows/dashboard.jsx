@@ -1,14 +1,17 @@
 import React from "react";
 import {
   LaptopOutlined,
+  LogoutOutlined,
   NotificationOutlined,
+  QuestionCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Col, Layout, Menu, Row, theme } from "antd";
+import { Breadcrumb, Col, Layout, Menu, Row, theme, Typography } from "antd";
 import SideMenu from "../components/menu";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 const { Header, Content, Sider } = Layout;
 const Dashboard = ({ sideMenuItems }) => {
+  let nav = useNavigate()
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -16,21 +19,63 @@ const Dashboard = ({ sideMenuItems }) => {
     <Layout
       style={{ width: "100%", height: window.innerHeight, overflow: "auto" }}
     >
-      <Header style={{ display: "flex", alignItems: "center" }}>
+      <Header style={{ position: "static" }}>
         <Row>
-          <Col xs={8} md={4}>
-            <div className="demo-logo">
-              <img src="/vite.svg" />
+          <Col xs={8} md={2}>
+            <div
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                flex: 1,
+                display: "flex",
+              }}
+              className="demo-logo"
+            >
+              <Typography
+                style={{ fontSize: 23, fontWeight: "bold", color: "#fff" }}
+              >
+                Tembowave
+              </Typography>
             </div>
           </Col>
-          <Col xs={16} md={20} style={{width:"100%"}}>
+          <Col xs={16} md={9} style={{ width: "100%" }}>
             <Menu
               theme="dark"
               mode="horizontal"
               direction="rtl"
               defaultSelectedKeys={["2"]}
               items={sideMenuItems}
-              style={{ flex: 1, minWidth: 0, float:"right", }}
+            />
+          </Col>
+          <Col md={7}></Col>
+          <Col xs={16} md={6} style={{ width: "100%" }}>
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              direction="rtl"
+              defaultSelectedKeys={["2"]}
+              items={[
+                {
+                  icon: <UserOutlined />,
+                  label: "My Account",
+                  key: "eLearning",
+                  onClick: (e) => {
+                    nav("account");
+                  },
+                },
+                
+                {
+                  icon: <LogoutOutlined color="#f00" />,
+                  label: "Logout",
+                  key: "community",
+                  onClick: (e) => {
+                    nav("elearn");
+                  },
+                  type:"submenu",
+
+                },
+              ]}
             />
           </Col>
         </Row>

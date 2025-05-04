@@ -19,6 +19,9 @@ import MenteeList from "../pages/mentorship/menteeList";
 import ProjectDashboard from "../windows/projectDashboard";
 import ProjectList from "../pages/projectManagement/projects";
 import MailList from "../pages/projectManagement/mailList";
+import AccountPage from "../pages/user/account";
+import TopicList from "../pages/forum/topicList";
+import TopicPage from "../pages/forum/topicView";
 
 export default function Routes() {
   return useRoutes([
@@ -37,6 +40,9 @@ export default function Routes() {
         { element: <ExpensesList />, path: "expenses" },
         { element: <BudgetList />, path: "budgets" },
         { element: <MentorshipDashboard />, path: "mentorship" },
+        {element: <TopicList/>, path:"forum"},
+        {element: <TopicPage/>, path:"forum/topic/:topic"},
+        {element: <AccountPage/>, path:"account"},
         { element: <NotFound />, path: "*" },
       ],
     },
@@ -46,7 +52,7 @@ export default function Routes() {
       children:[
         {element: <ProjectList/>, path:"projects"},
         {element: <MailList/>, path:"mail"},
-        { element: <NotFound />, path: "*" },
+        {element: <NotFound />, path: "*" },
       ]
     },
     {

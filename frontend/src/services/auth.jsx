@@ -8,12 +8,15 @@ export class AuthService {
   static signUp(data) {
     return API.post("auth/signup", data);
   }
-  static updateGroup(data){
-    return API.post("auth/updateRole",data)
+  static changePassword(data) {
+    return API.post("auth/changePassword", data);
   }
-  static getUser(){
-    console.log("Hey")
+  static updateGroup(data) {
+    return API.post("auth/updateRole", data);
+  }
+  static getUser() {
+    console.log("Hey");
     return API.get("auth/user");
   }
-  static verifyEmail(){}
+  static verifyEmail() {}
 }

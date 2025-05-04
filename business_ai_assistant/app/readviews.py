@@ -20,7 +20,7 @@ class UserDetails(APIView):
             data['phone'] = appuser.phone_number
             data['profile'] = appuser.profile_photo,
             data['address']= appuser.address,
-            data['group']= Group.objects.filter(id=appuser.group.id).first().name,
+            data['group']= Group.objects.filter(id=appuser.group.id).last().name,
             status = True
         except Exception as e:
             message = str(e)

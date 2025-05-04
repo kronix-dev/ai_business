@@ -23,8 +23,8 @@ export default function MailList() {
       children: [
         {
           type: "select",
-          placeholder: "Contractor Name",
-          name: "contractor_name",
+          placeholder: "Type",
+          name: "type",
           grid: {
             sm: 24,
             md: 12,
@@ -36,8 +36,8 @@ export default function MailList() {
         },
         {
           type: "text",
-          placeholder: "Contractor Number",
-          name: "contractor_no",
+          placeholder: "Address",
+          name: "address",
           grid: {
             sm: 24,
             md: 12,
@@ -47,11 +47,15 @@ export default function MailList() {
     },
   ];
   const addProject = (data) => {
-    ProjectsService.createProject(data);
+    ProjectsService.createMailList(data).then((r)=>{
+      getProjects()
+    });
+
   };
   const getProjects = () => {
-    ProjectsService.getProjects().then((r) => {
-      setProjects(r);
+    ProjectsService.getMailList().then((r) => {
+      setProjects(r.data);
+      setOpen(false)
     });
   };
   React.useEffect(() => {
@@ -62,7 +66,7 @@ export default function MailList() {
       <ListPage
         columns={[
           { key: "id", title: "Id", width: 50 },
-          { key: "name", title: "Name", width: 270 },
+          { key: "name", title: "Name", },
           {
             key: "type",
             title: "Type",
@@ -71,13 +75,14 @@ export default function MailList() {
             sorter: (a, b) => a.age - b.age,
           },
           {
-            key: "phone",
+            key: "address",
             title: "Phone number / Email address",
             align: "right",
             defaultSortOrder: "descend",
             sorter: (a, b) => a.age - b.age,
           },
         ]}
+        rows={projects}
         onAdd={() => {
           setOpen(true);
         }}

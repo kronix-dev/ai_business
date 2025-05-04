@@ -46,21 +46,21 @@ export default function Userdashboard() {
       },
     },
     {
-        icon: <DiffTwoTone />,
-        label: "Budgeting",
-        key: "budgets",
-        onClick: (e) => {
-          nav("budgets");
-        },
+      icon: <DiffTwoTone />,
+      label: "Budgeting",
+      key: "budgets",
+      onClick: (e) => {
+        nav("budgets");
       },
-      {
-        icon: <BookTwoTone />,
-        label: "Mentorship",
-        key: "mentrorship",
-        onClick: (e) => {
-          nav("mentorship");
-        },
+    },
+    {
+      icon: <BookTwoTone />,
+      label: "Mentorship",
+      key: "mentrorship",
+      onClick: (e) => {
+        nav("mentorship");
       },
+    },
     {
       icon: <BookTwoTone />,
       label: "eLearning",
@@ -70,22 +70,21 @@ export default function Userdashboard() {
       },
     },
     {
-        icon: <QuestionCircleTwoTone />,
-        label: "FAQ ",
-        key: "faq",
-        onClick: (e) => {
-          nav("user");
-        },
+      icon: <QuestionCircleTwoTone />,
+      label: "FAQ ",
+      key: "faq",
+      onClick: (e) => {
+        nav("user");
       },
+    },
     {
-        icon: <GlobalOutlined  color="#f00"/>,
-        label: "Community",
-        key: "community",
-        onClick: (e) => {
-          nav("elearn");
-        },
+      icon: <GlobalOutlined color="#f00" />,
+      label: "Community",
+      key: "community",
+      onClick: (e) => {
+        nav("forum");
       },
-    
+    },
   ];
   return (
     <div>

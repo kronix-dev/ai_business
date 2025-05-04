@@ -6,8 +6,8 @@ import ProjectsService from "../../services/projects";
 
 export default function ProjectList() {
   const [open, setOpen] = React.useState(false);
-  const [data,setData]= React.useState({})
-  const [projects, setProjects] = React.useState([])
+  const [data, setData] = React.useState({});
+  const [projects, setProjects] = React.useState([]);
   const createProject = [
     {
       type: "text",
@@ -19,15 +19,15 @@ export default function ProjectList() {
       },
     },
     {
-        type: "text",
-        placeholder: "Client",
-        name: "client",
-        grid: {
-          sm: 24,
-          md: 24,
-        },
+      type: "text",
+      placeholder: "Client",
+      name: "client",
+      grid: {
+        sm: 24,
+        md: 24,
       },
-    
+    },
+
     {
       type: "row",
       children: [
@@ -49,37 +49,36 @@ export default function ProjectList() {
             md: 12,
           },
         },
-      ]
+      ],
     },
     {
-        type: "text",
-        placeholder: "Contract period",
-        name: "contract_price",
-      },
+      type: "text",
+      placeholder: "Contract period",
+      name: "contract_period",
+    },
     {
-        type: "row",
-        children: [
-            {
-              type: "text",
-              placeholder: "Contractor Price",
-              name: "contractor_price",
-              grid: {
-                sm: 24,
-                md: 12,
-              },
-            },
-            {
-              type: "text",
-              placeholder: "Advance Payment",
-              name: "advance_payment",
-              grid: {
-                sm: 24,
-                md: 12,
-              },
-            },
-        ]
-      },
-
+      type: "row",
+      children: [
+        {
+          type: "text",
+          placeholder: "Contractor Price",
+          name: "contractor_price",
+          grid: {
+            sm: 24,
+            md: 12,
+          },
+        },
+        {
+          type: "text",
+          placeholder: "Advance Payment",
+          name: "advance_payment",
+          grid: {
+            sm: 24,
+            md: 12,
+          },
+        },
+      ],
+    },
 
     {
       type: "row",
@@ -129,23 +128,31 @@ export default function ProjectList() {
       ],
     },
   ];
-  const addProject = (data)=>{
-    ProjectsService.createProject(data)
-  }
-  const getProjects = ()=>{
-    ProjectsService.getProjects().then(r=>{
-        setProjects(r)
-    })
-  }
-  React.useEffect(()=>{
-    getProjects()
-  },[])
+  const addProject = (data) => {
+    ProjectsService.createProject(data).then((r)=>{
+      getProjects()
+    });
+  };
+  const getProjects = () => {
+    ProjectsService.getProjects().then((r) => {
+      console.log(r.data)
+      setProjects(r.data);
+      setOpen(false)
+    });
+  };
+  React.useEffect(() => {
+    getProjects();
+  }, []);
   return (
     <div>
       <ListPage
+        rows={projects}
         columns={[
           { key: "id", title: "Id", width: 50 },
-          { key: "name", title: "Title", width: 270 },
+          { key: "name", title: "Title", },
+          { key: "contractor_name", title: "Contractor name", width: 270 },
+          { key: "contract_price", title: "Contractor price", width: 270 },
+          { key: "contract_period", title: "Contract period", width: 270 },
           {
             key: "start_date",
             title: "Start date",
@@ -171,7 +178,7 @@ export default function ProjectList() {
         open={open}
         title="Create Project"
         onOk={() => {
-            addProject(data)
+          addProject(data);
         }}
       >
         <KForm
