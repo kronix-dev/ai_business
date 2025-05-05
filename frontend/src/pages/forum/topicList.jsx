@@ -34,7 +34,7 @@ export default function TopicList() {
         <Col xs={24} md={4}></Col>
         <Col xs={6} md={16}>
           <KModal title="Add a new topic" setOpen={setOpen} open={open}>
-            <KForm form={addTopicForm} />
+            <KForm form={addTopicForm} onSubmit={createTopic}/>
           </KModal>
 
           <KTable
@@ -71,9 +71,12 @@ export default function TopicList() {
 }
 
 export function TopicCard({ title, paragraph, id }) {
+  let nav = useNavigate()
   return (
     <div>
-      <Card>
+      <Card onClick={()=>{
+        nav('topic/'+ id)
+      }}>
         <Meta
           avatar={<Avatar src="/vite.svg" shape="circle" />}
           title={<Typography onClick={() => {}}>{title}</Typography>}

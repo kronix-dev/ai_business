@@ -21,11 +21,11 @@ import * as React from "react";
 
 export function MentorCard({ data = { score: "5" } }) {
   return (
-    <Card style={{margin:3}}>
+    <Card style={{ margin: 3 }}>
       <div>
         <Meta
           avatar={<Avatar src="/vite.svg" shape="circle" />}
-          title="Hassan Said"
+          title={data.user.fname + " " + data.user.lname}
           description="Experienced"
         />
         <Divider />
@@ -35,30 +35,30 @@ export function MentorCard({ data = { score: "5" } }) {
         <MentorDataDisplay
           icon={<LineChartOutlined />}
           title={"Experience"}
-          value={"7 years"}
+          value={data.mentor.experience}
         />
         <MentorDataDisplay
           icon={<ClockCircleOutlined />}
           title={"Availability"}
-          value={"Weekdays"}
+          value={data.mentor.availability.join(", ")}
         />
         <MentorDataDisplay
           icon={<FileOutlined />}
           title={"Qualifications"}
           value={
-            "Bachelor of Science in BIS, Bachelor of Science in Law, PHD in Psychology"
+            data.mentor.qualifications.join(", ")
           }
         />
         <MentorDataDisplay
           icon={<BulbOutlined />}
           title={"Area of expertise"}
-          value={"Sales, Marketing, Human resource, Engineering"}
+          value={data.mentor.expert_area.join(",")}
         />
       </Space>
       <Alert
-      style={{marginBottom:6}}
+        style={{ marginBottom: 6 }}
         showIcon
-        description="asd"
+        description={data.reason}
         message={
           <div>
             <Typography>Reason</Typography>
@@ -75,14 +75,14 @@ export function MentorCard({ data = { score: "5" } }) {
           borderRadius: "50%",
           border: "2px solid #000",
           padding: 10,
-          marginBottom:4
+          marginBottom: 4,
         }}
       >
         <Row>
           <Col xs={12}></Col>
           <Col xs={24} style={{ textAlign: "center" }}>
             <Typography style={{ fontWeight: "bold", fontSize: 16 }}>
-              5
+              {data.score}
             </Typography>
             <Typography>Score</Typography>
           </Col>

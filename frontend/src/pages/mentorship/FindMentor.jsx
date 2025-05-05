@@ -7,9 +7,12 @@ import { MentorshipService } from "../../services/mentorship";
 export default function FindMentor() {
   const onSubmit = (dat) => {
     Loading.showLoader();
-    MentorshipService.matchMentor(dat);
+    MentorshipService.matchMentor(dat).then((r) => {
+      // setResults(r.data);
+      Loading.hideLoader();
+    });
   };
-  const [searchResults, setResults] = React.useState(['','']);
+  const [searchResults, setResults] = React.useState(["", ""]);
   return (
     <div>
       <Typography.Title level={4}>Find a mentor</Typography.Title>
@@ -26,7 +29,7 @@ export default function FindMentor() {
       <Row>
         {searchResults.map((prop) => (
           <Col md={8}>
-            <MentorCard />
+            <MentorCard data={prop}/>
           </Col>
         ))}
       </Row>
