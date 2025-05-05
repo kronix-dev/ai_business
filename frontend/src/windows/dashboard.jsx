@@ -41,9 +41,9 @@ const Dashboard = ({ sideMenuItems }) => {
               className="demo-logo"
             >
               <Typography
-                style={{ fontSize: 23, fontWeight: "bold", color: "#fff" }}
+                style={{ fontSize: 17, fontWeight: "bold", color: "#fff" }}
               >
-                Tembowave
+                Inua Mwanamke
               </Typography>
             </div>
           </Col>
@@ -78,6 +78,7 @@ const Dashboard = ({ sideMenuItems }) => {
                   label: "Logout",
                   key: "community",
                   onClick: (e) => {
+                    sessionStorage.setItem("token",null)
                     AuthService.logout()
                     nav("/login");
                   },

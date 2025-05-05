@@ -19,7 +19,8 @@ export class AuthService {
     return API.get("auth/user");
   }
   static logOut(){
-    sessionStorage.setItem("token") = null
+    
+    return null
   }
   static verifyEmail() {}
 }
