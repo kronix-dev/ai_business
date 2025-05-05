@@ -19,9 +19,9 @@ export default function FindMentor() {
   const [searchResults, setResults] = React.useState([]);
   return (
     <div>
-      <Typography.Title level={4}>Find a mentor</Typography.Title>
       {show && (
         <div>
+          <Typography.Title level={4}>Find a mentor</Typography.Title>
           <Typography>Describe traits you prefer from your mentor</Typography>
           <KForm
             onSubmit={onSubmit}

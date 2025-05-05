@@ -18,5 +18,8 @@ export class AuthService {
     console.log("Hey");
     return API.get("auth/user");
   }
+  static logOut(){
+    sessionStorage.setItem("token") = null
+  }
   static verifyEmail() {}
 }

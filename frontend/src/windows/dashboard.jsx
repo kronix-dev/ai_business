@@ -9,12 +9,20 @@ import {
 import { Breadcrumb, Col, Layout, Menu, Row, theme, Typography } from "antd";
 import SideMenu from "../components/menu";
 import { Outlet, useNavigate } from "react-router";
+import { AuthService } from "../services/auth";
+import { useUserContext } from "../controllers/userContext";
 const { Header, Content, Sider } = Layout;
 const Dashboard = ({ sideMenuItems }) => {
-  let nav = useNavigate()
+  let nav = useNavigate();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const { setUser } = useUserContext();
+  React.useEffect(() => {
+    AuthService.getUser().then((r) => {
+      setUser(r.data);
+    });
+  }, []);
   return (
     <Layout
       style={{ width: "100%", height: window.innerHeight, overflow: "auto" }}
@@ -64,16 +72,16 @@ const Dashboard = ({ sideMenuItems }) => {
                     nav("account");
                   },
                 },
-                
+
                 {
                   icon: <LogoutOutlined color="#f00" />,
                   label: "Logout",
                   key: "community",
                   onClick: (e) => {
-                    nav("elearn");
+                    AuthService.logout()
+                    nav("/login");
                   },
-                  type:"submenu",
-
+                  type: "submenu",
                 },
               ]}
             />
