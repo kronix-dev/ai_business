@@ -25,7 +25,7 @@ export function MentorCard({ data = { score: "5" } }) {
       <div>
         <Meta
           avatar={<Avatar src="/vite.svg" shape="circle" />}
-          title={data.user.fname + " " + data.user.lname}
+          title={data.mentor.fname + " " + data.mentor.lname}
           description="Experienced"
         />
         <Divider />
@@ -52,7 +52,7 @@ export function MentorCard({ data = { score: "5" } }) {
         <MentorDataDisplay
           icon={<BulbOutlined />}
           title={"Area of expertise"}
-          value={data.mentor.expert_area.join(",")}
+          value={data.mentor.area_expert.join(",")}
         />
       </Space>
       <Alert

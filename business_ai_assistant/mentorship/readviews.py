@@ -37,9 +37,9 @@ class FindMentor(APIView):
 
             match = json.loads(mat_Res)
             for i in match:
+                men = getMentor(MentorProfile.objects.get(id=i["mentor_id"]))
                 mentor = {
-                    "mentor": getMentor(MentorProfile.objects.get(id=i["mentor_id"])),
-                    
+                    "mentor":men ,
                     "reason": i["reason"],
                     "score": i["score"],
                 }
@@ -83,4 +83,6 @@ def getMentor(p):
     pf["skills"] = p.skills
     pf["qualifications"] = p.qualifications
     pf["experience"] = p.past_mentorship_experience
+    pf['fname'] = p.user.first_name
+    pf['lname'] = p.user.last_name
     return pf

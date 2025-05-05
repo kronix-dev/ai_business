@@ -5,31 +5,39 @@ import { MentorCard } from "./mentorComponents";
 import { Loading } from "../../components/loader";
 import { MentorshipService } from "../../services/mentorship";
 export default function FindMentor() {
+  const [show, setShow] = React.useState(true);
   const onSubmit = (dat) => {
     Loading.showLoader();
     MentorshipService.matchMentor(dat).then((r) => {
-      // setResults(r.data);
+      setResults(r.data);
+      console.log(r);
       Loading.hideLoader();
+      setShow(false);
     });
   };
-  const [searchResults, setResults] = React.useState(["", ""]);
+
+  const [searchResults, setResults] = React.useState([]);
   return (
     <div>
       <Typography.Title level={4}>Find a mentor</Typography.Title>
-      <Typography>Describe traits you prefer from your mentor</Typography>
-      <KForm
-        onSubmit={onSubmit}
-        onFormChange={() => {}}
-        showSubmitButton
-        form={mentorForm}
-        submitText={"Search"}
-      />
-      <Divider />
+      {show && (
+        <div>
+          <Typography>Describe traits you prefer from your mentor</Typography>
+          <KForm
+            onSubmit={onSubmit}
+            onFormChange={() => {}}
+            showSubmitButton
+            form={mentorForm}
+            submitText={"Search"}
+          />
+          <Divider />
+        </div>
+      )}
       <Typography.Title level={4}>Results</Typography.Title>
       <Row>
         {searchResults.map((prop) => (
           <Col md={8}>
-            <MentorCard data={prop}/>
+            <MentorCard data={prop} />
           </Col>
         ))}
       </Row>

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group,User
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -30,3 +30,21 @@ class UserDetails(APIView):
             'data':data,
             'status':status
         })
+        
+def getUser(userid):
+    data = {}
+    try:
+        appuser = AppUser.objects.filter(user=request.user.id).first()
+        data['username'] =  request.user.username
+        data['fname'] = request.user.first_name
+        data['lname'] = request.user.last_name
+        data['email'] = request.user.email
+        data['phone'] = appuser.phone_number
+        data['profile'] = appuser.profile_photo,
+        data['address']= appuser.address,
+        data['group']= Group.objects.filter(id=appuser.group.id).last().name,
+        status = True
+    except Exception as e:
+        message = str(e)
+    
+    return data;
