@@ -7,6 +7,7 @@ export default function ListPage({ rows, columns, title, onAdd, titlee="" }) {
     <div>
       <Typography.Title level={4}>{titlee}</Typography.Title>
       <KTable columns={columns} rows={rows} onButtonClick={onAdd}/>
+      
     </div>
   );
 }

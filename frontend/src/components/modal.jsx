@@ -13,6 +13,7 @@ export default function KModal({
   children,
   width = window.innerWidth / 3,
   title = "",
+  continerWidth = "fit-content",
   okText = "ok",
 }) {
   return (
@@ -25,9 +26,10 @@ export default function KModal({
         />
       }
       title={title}
-      width={width}
+      width={continerWidth}
       open={open}
       okText={okText}
+      centered
       closable={closeable}
       destroyOnClose
       onClose={() => {
@@ -52,6 +54,7 @@ export default function KModal({
           maxHeight: window.innerHeight * 0.7,
           overflow: "auto",
           padding: 3,
+          width: continerWidth,
         }}
       >
         {children}

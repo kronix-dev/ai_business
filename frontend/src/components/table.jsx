@@ -1,14 +1,14 @@
 import * as React from "react";
-import { Button, Col, Input, Row, Select, Space, Table } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Button, Col, Input, Row, Select, Space, Table, Tooltip } from "antd";
+import { DotChartOutlined, SearchOutlined } from "@ant-design/icons";
 export default function KTable({
   columns = [],
-  hoverable=true,
-  showHeader=true,
+  hoverable = true,
+  showHeader = true,
   rows = [],
   buttonText = "Create new",
   onButtonClick = () => {},
-  SearchComponent = ({setCol, setSearch}) => (
+  SearchComponent = ({ setCol, setSearch }) => (
     <Space direction="horizontal">
       <Space.Compact>
         <Select
@@ -43,7 +43,7 @@ export default function KTable({
     <div>
       <Row style={{ marginBottom: 10 }}>
         <Col md={12}>
-          <SearchComponent setCol={setCol} setSearch={setSearch}/>
+          <SearchComponent setCol={setCol} setSearch={setSearch} />
         </Col>
         <Col md={12}>
           <Button
@@ -59,21 +59,57 @@ export default function KTable({
       </Row>
 
       <Table
-      showHeader={showHeader}
-      rowHoverable={hoverable}
+        showHeader={showHeader}
+        rowHoverable={hoverable}
         style={{ minHeight: 700 }}
         sticky
         showSorterTooltip
         size="large"
         dataSource={
           col !== "" && search !== ""
-            ? rows.filter((v) =>
-                v[col].toLowerCase().includes(search.toLowerCase())
-              )
-            : rows
+            ? rows
+                .map((prop) => ({
+                  ...prop,
+                  action: (
+                    <div>
+                      <DotChartOutlined />
+                    </div>
+                  ),
+                }))
+                .filter((v) =>
+                  v[col].toLowerCase().includes(search.toLowerCase())
+                )
+            : rows.map((prop) => ({
+                ...prop,
+                action: (
+                  <div>
+                    <Tooltip defaultOpen={true} open>
+                      <DotChartOutlined />
+                    </Tooltip>
+                  </div>
+                ),
+              }))
         }
-        columns={columns.map((prop) => ({ ...prop, dataIndex: prop.key }))}
+        columns={[
+          ...columns.map((prop) => ({ ...prop, dataIndex: prop.key })),
+          {
+            dataIndex: "action",
+            title: "Action",
+            width: 90,
+            align: "center",
+          },
+        ]}
       />
     </div>
   );
 }
+
+const TableMenu = ({ data }) => {
+  return (
+    <div>
+      <Tooltip defaultOpen={true} open>
+        <DotChartOutlined />
+      </Tooltip>
+    </div>
+  );
+};

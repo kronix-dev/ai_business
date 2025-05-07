@@ -5,10 +5,12 @@ import ListPage from "../../components/listPage";
 import KForm from "../../components/form";
 import Budgeting from "../../services/budgeting";
 import KModal from "../../components/modal";
+import DataDisplay, { addComponent } from "../../components/dataDisplay";
 export default function BudgetList({ columns = [], rows = [] }) {
   const [cats, setCats] = React.useState([]);
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState([{}]);
   const [open, setOpen] = React.useState(false);
+  const [viewOpen, setViewOpen] = React.useState(false);
   const [, forceUpdate] = React.useState();
   const getCats = () => {
     Budgeting.getBudgetCategories().then((r) => {
@@ -21,7 +23,6 @@ export default function BudgetList({ columns = [], rows = [] }) {
       type: "text",
       placeholder: "Title",
       name: "name",
-      
     },
     {
       type: "row",
@@ -58,8 +59,8 @@ export default function BudgetList({ columns = [], rows = [] }) {
       type: "pair",
       placeholder: "description",
       name: "budget_items",
-      itemText:"Budget item ",
-      
+      itemText: "Budget item ",
+
       child: {
         type: "row",
         children: [
@@ -106,6 +107,20 @@ export default function BudgetList({ columns = [], rows = [] }) {
       },
     },
   ];
+  const getData = () => {
+    let p = [];
+    p.push({ ...addComponent("textLabel", "Project name", data[0].name) });
+    console.log(p);
+    p.push({ ...addComponent("textLabel", "Contractor name", data[0].type) });
+    p.push({ ...addComponent("textLabel", "Contractor no", data[0].name) });
+    p.push({ ...addComponent("textLabel", "Client name ", data[0].name) });
+    p.push({ ...addComponent("textLabel", "Contract period ", data[0].name) });
+    p.push({ ...addComponent("textLabel", "Contract price", data[0].name) });
+    p.push({ ...addComponent("textLabel", "Advance payment", data[0].name) });
+    p.push({ ...addComponent("textLabel", "Bank name", data[0].name) });
+    p.push({ ...addComponent("textLabel", "Validity period", data[0].name) });
+    return p;
+  };
   React.useEffect(() => {
     getCats();
     Budgeting.getBudgets().then((r) => {
@@ -120,10 +135,21 @@ export default function BudgetList({ columns = [], rows = [] }) {
         columns={[
           { key: "id", title: "Id", width: 50 },
           { key: "name", title: "Title", width: 270 },
-          { key: "start_date", title: "Start date", align: "right",defaultSortOrder: 'descend',
-            sorter: (a, b) => a.age - b.age, },
-          { key: "end_date", title: "End date", align: "right",defaultSortOrder: 'descend',
-            sorter: (a, b) => a.age - b.age, },
+          { key: "amount", title: "Amount", width: 270 },
+          {
+            key: "start_date",
+            title: "Start date",
+            align: "right",
+            defaultSortOrder: "descend",
+            sorter: (a, b) => a.age - b.age,
+          },
+          {
+            key: "end_date",
+            title: "End date",
+            align: "right",
+            defaultSortOrder: "descend",
+            sorter: (a, b) => a.age - b.age,
+          },
         ]}
         titlee={"My Budgets"}
         onAdd={() => {
@@ -132,7 +158,7 @@ export default function BudgetList({ columns = [], rows = [] }) {
         }}
         rows={data}
       />
-       <KModal
+      <KModal
         setOpen={setOpen}
         open={open}
         title="Create budget"
@@ -158,6 +184,17 @@ export default function BudgetList({ columns = [], rows = [] }) {
           showSubmitButton={false}
           submitText="Save"
         />
+      </KModal>
+      <KModal
+        setOpen={setViewOpen}
+        open={true}
+        title="Create budget"
+        onOk={() => {
+          setViewOpen(false);
+        }}
+        continerWidth={window.innerWidth / 2}
+      >
+        <DataDisplay data={getData()} />
       </KModal>
     </div>
   );
