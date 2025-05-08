@@ -1,12 +1,27 @@
 import * as React from "react";
-import { Button, Col, Input, Row, Select, Space, Table, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Dropdown,
+  Input,
+  Menu,
+  Row,
+  Select,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import { DotChartOutlined, SearchOutlined } from "@ant-design/icons";
+import * as AntIcon from "@ant-design/icons";
 export default function KTable({
   columns = [],
   hoverable = true,
+  tableMenu = [],
   showHeader = true,
   rows = [],
+  minHeight = 700,
   buttonText = "Create new",
+  showCreate = true,
   onButtonClick = () => {},
   SearchComponent = ({ setCol, setSearch }) => (
     <Space direction="horizontal">
@@ -40,20 +55,20 @@ export default function KTable({
   const [search, setSearch] = React.useState("");
 
   return (
-    <div>
+    <div style={{width:"100%", maxWidth:"100%"}}>
       <Row style={{ marginBottom: 10 }}>
         <Col md={12}>
           <SearchComponent setCol={setCol} setSearch={setSearch} />
         </Col>
         <Col md={12}>
-          <Button
+          {showCreate&&<Button
             onClick={onButtonClick}
             shape="rounded"
             style={{ float: "right" }}
             type="primary"
           >
             {buttonText}
-          </Button>
+          </Button>}
           <Space align="end"></Space>
         </Col>
       </Row>
@@ -61,7 +76,7 @@ export default function KTable({
       <Table
         showHeader={showHeader}
         rowHoverable={hoverable}
-        style={{ minHeight: 700 }}
+        style={{ minHeight: minHeight }}
         sticky
         showSorterTooltip
         size="large"
@@ -79,13 +94,11 @@ export default function KTable({
                 .filter((v) =>
                   v[col].toLowerCase().includes(search.toLowerCase())
                 )
-            : rows.map((prop) => ({
+            : rows.map((prop,key) => ({
                 ...prop,
                 action: (
                   <div>
-                    <Tooltip defaultOpen={true} open>
-                      <DotChartOutlined />
-                    </Tooltip>
+                    <TableMenu menus={tableMenu} data={prop} itemKey={key} />
                   </div>
                 ),
               }))
@@ -104,12 +117,25 @@ export default function KTable({
   );
 }
 
-const TableMenu = ({ data }) => {
+const TableMenu = ({ data, menus, itemKey }) => {
   return (
     <div>
-      <Tooltip defaultOpen={true} open>
-        <DotChartOutlined />
-      </Tooltip>
+      <Dropdown
+        placement="bottomCenter"
+        dropdownRender={() => (
+          <Menu
+            items={menus.map((prop) => ({
+              icon: prop.icon,
+              label: prop.label,
+              onClick: () => {
+                prop.onClick(data, itemKey);
+              },
+            }))}
+          />
+        )}
+      >
+        <AntIcon.EllipsisOutlined />
+      </Dropdown>
     </div>
   );
 };

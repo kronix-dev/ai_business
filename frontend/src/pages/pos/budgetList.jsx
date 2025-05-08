@@ -5,11 +5,16 @@ import ListPage from "../../components/listPage";
 import KForm from "../../components/form";
 import Budgeting from "../../services/budgeting";
 import KModal from "../../components/modal";
-import DataDisplay, { addComponent } from "../../components/dataDisplay";
+import DataDisplay, {
+  addComponent,
+  DataDisplayModal,
+} from "../../components/dataDisplay";
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 export default function BudgetList({ columns = [], rows = [] }) {
   const [cats, setCats] = React.useState([]);
   const [data, setData] = React.useState([{}]);
   const [open, setOpen] = React.useState(false);
+  const [activeItem, setActiveItem] = React.useState(null);
   const [viewOpen, setViewOpen] = React.useState(false);
   const [, forceUpdate] = React.useState();
   const getCats = () => {
@@ -109,16 +114,20 @@ export default function BudgetList({ columns = [], rows = [] }) {
   ];
   const getData = () => {
     let p = [];
-    p.push({ ...addComponent("textLabel", "Project name", data[0].name) });
-    console.log(p);
-    p.push({ ...addComponent("textLabel", "Contractor name", data[0].type) });
-    p.push({ ...addComponent("textLabel", "Contractor no", data[0].name) });
-    p.push({ ...addComponent("textLabel", "Client name ", data[0].name) });
-    p.push({ ...addComponent("textLabel", "Contract period ", data[0].name) });
-    p.push({ ...addComponent("textLabel", "Contract price", data[0].name) });
-    p.push({ ...addComponent("textLabel", "Advance payment", data[0].name) });
-    p.push({ ...addComponent("textLabel", "Bank name", data[0].name) });
-    p.push({ ...addComponent("textLabel", "Validity period", data[0].name) });
+    p.push({
+      ...addComponent("table", "Project name", {
+        rows: data[activeItem].items,
+        columns: [
+          {key:"description", title:"Description"},
+          {key:"amount", title:"Amount"}
+        ],
+        tableMenu: [],
+        showCreate: false
+      },{
+        xs:24, md:24
+      }),
+    });
+    
     return p;
   };
   React.useEffect(() => {
@@ -132,6 +141,21 @@ export default function BudgetList({ columns = [], rows = [] }) {
   return (
     <div>
       <ListPage
+        tableMenu={[
+          {
+            icon: <EyeOutlined />,
+            label: "View",
+            onClick: (data, key) => {
+              setViewOpen(true);
+              setActiveItem(key);
+            },
+          },
+          {
+            icon: <DeleteOutlined />,
+            label: "Delete",
+            onClick: (data, key) => {},
+          },
+        ]}
         columns={[
           { key: "id", title: "Id", width: 50 },
           { key: "name", title: "Title", width: 270 },
@@ -185,17 +209,20 @@ export default function BudgetList({ columns = [], rows = [] }) {
           submitText="Save"
         />
       </KModal>
-      <KModal
-        setOpen={setViewOpen}
-        open={true}
-        title="Create budget"
-        onOk={() => {
-          setViewOpen(false);
-        }}
-        continerWidth={window.innerWidth / 2}
-      >
-        <DataDisplay data={getData()} />
-      </KModal>
+      {activeItem !== null && (
+        <DataDisplayModal
+          setOpen={setViewOpen}
+          open={viewOpen}
+          showCancel={false}
+          okText="Edit"
+          title={data[activeItem].name}
+          onOk={() => {
+            setViewOpen(false);
+          }}
+          containerWidth={window.innerWidth / 2}
+          data={getData()}
+        />
+      )}
     </div>
   );
 }

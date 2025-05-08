@@ -6,7 +6,10 @@ export default function BudgetView({ data }) {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
     let p = [];
-    p.push(addComponent("textLabel", "Project name", data.name));
+    p.push(addComponent("table", "Project name", {
+        rows: data.items,
+        columns: 
+    }));
     p.push(addComponent("textLabel", "Contractor name", data.name));
     p.push(addComponent("textLabel", "Contractor no", data.name));
     p.push(addComponent("textLabel", "Client name ", data.name));

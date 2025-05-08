@@ -4,7 +4,7 @@ const dataDisplayItemDto = {
   value: "",
   showLabel: false,
   children: <></>,
-  styles:{marginBottom:10},
+  styles: { marginBottom: 15 },
   grid: {
     xs: 12,
     sm: 12,
