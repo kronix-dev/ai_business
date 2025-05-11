@@ -3,10 +3,15 @@ import ListPage from "../../components/listPage";
 import KModal from "../../components/modal";
 import KForm from "../../components/form";
 import ProjectsService from "../../services/projects";
+import { DataDisplayModal, addComponent } from "../../components/dataDisplay";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 export default function ProjectList() {
   const [open, setOpen] = React.useState(false);
+  const [viewOpen, setViewOpen] = React.useState(false);
   const [data, setData] = React.useState({});
+  const [activeIndex, setActiveItem] = React.useState(null);
   const [projects, setProjects] = React.useState([]);
   const createProject = [
     {
@@ -62,7 +67,7 @@ export default function ProjectList() {
         {
           type: "text",
           placeholder: "Contractor Price",
-          name: "contractor_price",
+          name: "contract_price",
           grid: {
             sm: 24,
             md: 12,
@@ -128,16 +133,88 @@ export default function ProjectList() {
       ],
     },
   ];
+  const getProjectData = (index) => {
+    let p = [];
+    p.push({
+      ...addComponent(
+        "textLabel",
+        "Contractor name",
+        projects[index].contractor_name
+      ),
+    });
+    p.push({
+      ...addComponent(
+        "textLabel",
+        "Contractor number",
+        projects[index].contractor_no
+      ),
+    });
+    p.push({
+      ...addComponent(
+        "textLabel",
+        "Contract Price",
+        projects[index].contract_price
+      ),
+    });
+    p.push({
+      ...addComponent(
+        "textLabel",
+        "Contract Period",
+        projects[index].contract_period
+      ),
+    });
+    p.push({
+      ...addComponent("textLabel", "Client", projects[index].client),
+    });
+    p.push({
+      ...addComponent("textLabel", "Bank name", projects[index].bank_name),
+    });
+    p.push({
+      ...addComponent(
+        "textLabel",
+        "Advance payment",
+        projects[index].advance_payment
+      ),
+    });
+    p.push({
+      ...addComponent(
+        "textLabel",
+        "Advance payment",
+        projects[index].advance_payment
+      ),
+    });
+    p.push({
+      ...addComponent(
+        "textLabel",
+        "Validity period",
+        projects[index].validity_period
+      ),
+    });
+    p.push({
+      ...addComponent("textLabel", "Start date", projects[index].start_date),
+    });
+    p.push({
+      ...addComponent("textLabel", "Start date", projects[index].start_date),
+    });
+    return p;
+  };
   const addProject = (data) => {
-    ProjectsService.createProject(data).then((r)=>{
-      getProjects()
+    ProjectsService.createProject(data).then((r) => {
+      getProjects();
     });
   };
+  const editProject = ()=>{
+    let p = data
+    data["pid"] = projects[activeIndex].id
+    ProjectsService.createProject(p).then(r=>{
+      getProjects()
+    })
+  }
   const getProjects = () => {
     ProjectsService.getProjects().then((r) => {
-      console.log(r.data)
+      console.log(r.data);
       setProjects(r.data);
-      setOpen(false)
+      setOpen(false);
     });
   };
   React.useEffect(() => {
@@ -147,12 +224,43 @@ export default function ProjectList() {
     <div>
       <ListPage
         rows={projects}
+        childButtons={
+          <div>
+            <Button onClick={()=>{
+              ProjectsService.pushNotification()
+            }}>Send push notification</Button>
+          </div>
+        }
+        tableMenu={[
+          {
+            icon: <EyeOutlined />,
+            label: "View",
+            onClick: (data, key) => {
+              setViewOpen(true);
+              setActiveItem(key);
+            },
+          },
+          {
+            icon: <EditOutlined />,
+            label: "Edit",
+            onClick: (data, key) => {
+              setOpen(true);
+              setActiveItem(key);
+            },
+          },
+          {
+            icon: <DeleteOutlined />,
+            label: "Delete",
+            onClick: (data, key) => {},
+          },
+        ]}
         columns={[
           { key: "id", title: "Id", width: 50 },
-          { key: "name", title: "Title", },
+          { key: "name", title: "Title" },
           { key: "contractor_name", title: "Contractor name", width: 270 },
           { key: "contract_price", title: "Contractor price", width: 270 },
           { key: "contract_period", title: "Contract period", width: 270 },
+          { key: "validity_period", title: "Validity period", width: 270 },
           {
             key: "start_date",
             title: "Start date",
@@ -178,7 +286,13 @@ export default function ProjectList() {
         open={open}
         title="Create Project"
         onOk={() => {
-          addProject(data);
+          if(activeIndex===null){
+
+            addProject(data);
+          }
+          else{
+            editProject(data);
+          }
         }}
       >
         <KForm
@@ -186,11 +300,21 @@ export default function ProjectList() {
           onFormChange={(form) => {
             setData(form);
           }}
+          defaultValues={activeIndex !== null ? projects[activeIndex] : {}}
           form={createProject}
           showSubmitButton={false}
           submitText="Save"
         />
       </KModal>
+      <DataDisplayModal
+        setOpen={(viewop)=>{setActiveItem(null);setViewOpen(viewop)}}
+        data={activeIndex !== null ? getProjectData(activeIndex) : []}
+        open={viewOpen}
+        title={activeIndex !== null ? projects[activeIndex].name : ""}
+        onOk={() => {
+          // addProject(data);
+        }}
+      />
     </div>
   );
 }

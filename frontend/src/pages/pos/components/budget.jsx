@@ -8,7 +8,7 @@ export default function BudgetView({ data }) {
     let p = [];
     p.push(addComponent("table", "Project name", {
         rows: data.items,
-        columns: 
+        columns: []
     }));
     p.push(addComponent("textLabel", "Contractor name", data.name));
     p.push(addComponent("textLabel", "Contractor no", data.name));

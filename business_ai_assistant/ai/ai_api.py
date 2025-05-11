@@ -1,27 +1,57 @@
 from openai import OpenAI
 
 
-
 def aiPost(content):
     # print(content)
     # return content
-    client = OpenAI(api_key='sk-de07a81c164747aa87ed11f82cd062fb', base_url='https://api.deepseek.com')
+    client = OpenAI(
+        api_key="sk-de07a81c164747aa87ed11f82cd062fb",
+        base_url="https://api.deepseek.com",
+    )
     response = client.chat.completions.create(
-    model='deepseek-chat',
-    messages=[
-        {'role': 'user', 'content': content},
-    ],
-    stream=False)
-    return response.choices[0].message.content.replace("```json","").replace("```","")
+        model="deepseek-chat",
+        messages=[
+            {"role": "user", "content": content},
+        ],
+        stream=False,
+    )
+    return response.choices[0].message.content.replace("```json", "").replace("```", "")
 
 
-def budgetAssistance(budget):
-    aiPost(' i have this budget for my business i would like you to assist in refining it and making it better which can help my business grow i have it in json format, also give me a json response. Here is the json '+str(budget))
-    
+def budgetAssistance(budget, revenueTotal, expensesTotal):
+    return (
+        aiPost(
+            " i have this budget for my business i would like you to assist in refining it"
+            + " and making it better which can help my business. Here is the budget"
+            + str(budget)
+        )
+        + " and also here is my previous expenses totaled and my revenues were"
+    )
+
+
+def overallBusinessAssistance(budget, revenueTotal, expensesTotal):
+    return aiPost(
+        " Hi i have this business i want you to analyse my income and expenses in relation "
+        + "to my budget and suggest 5 imorovements that would grow the business. This is my current month budget "
+        + budget
+        + ". These were my sales "
+        + sales
+        + ". And these were my expenses"
+        + str(expenses)
+        + " and also here"
+        + " Return a json list containing 5 improvements that should be done next month"
+    )
+
+
 def mentorMatching(criteria, mentors):
-    return aiPost('Hello i want you to help me find the best mentor for my business'+
-           ', i have certain criterias that i want my mentor to have, so find the best'+
-           ' available mentor using these criterias and return the mentor id and score here'+
-           ' are my criterias, '+criteria+'. Here are mentor profiles ' + mentors+''+
-           '. Please return a only a json list of mentor_id, reason for selecting the mentor and score of each mentor. just json with no explanations'
-)
+    return aiPost(
+        "Hello i want you to help me find the best mentor for my business"
+        + ", i have certain criterias that i want my mentor to have, so find the best"
+        + " available mentor using these criterias and return the mentor id and score here"
+        + " are my criterias, "
+        + criteria
+        + ". Here are mentor profiles "
+        + mentors
+        + ""
+        + ". Please return a only a json list of mentor_id, reason for selecting the mentor and score of each mentor. just json with no explanations"
+    )

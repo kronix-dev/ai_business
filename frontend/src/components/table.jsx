@@ -17,6 +17,7 @@ export default function KTable({
   columns = [],
   hoverable = true,
   tableMenu = [],
+  childButtons = <></>,
   showHeader = true,
   rows = [],
   minHeight = 700,
@@ -55,21 +56,25 @@ export default function KTable({
   const [search, setSearch] = React.useState("");
 
   return (
-    <div style={{width:"100%", maxWidth:"100%"}}>
+    <div style={{ width: "100%", maxWidth: "100%" }}>
       <Row style={{ marginBottom: 10 }}>
         <Col md={12}>
           <SearchComponent setCol={setCol} setSearch={setSearch} />
         </Col>
-        <Col md={12}>
-          {showCreate&&<Button
-            onClick={onButtonClick}
-            shape="rounded"
-            style={{ float: "right" }}
-            type="primary"
-          >
-            {buttonText}
-          </Button>}
-          <Space align="end"></Space>
+        <Col md={12} style={{justifyContent:"flex-end", display:"flex"}}>
+          <Space align="end">
+            {showCreate && (
+              <Button
+                onClick={onButtonClick}
+                shape="rounded"
+                style={{ float: "right" }}
+                type="primary"
+              >
+                {buttonText}
+              </Button>
+            )}
+            {childButtons}
+          </Space>
         </Col>
       </Row>
 
@@ -94,7 +99,7 @@ export default function KTable({
                 .filter((v) =>
                   v[col].toLowerCase().includes(search.toLowerCase())
                 )
-            : rows.map((prop,key) => ({
+            : rows.map((prop, key) => ({
                 ...prop,
                 action: (
                   <div>

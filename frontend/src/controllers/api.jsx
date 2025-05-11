@@ -10,6 +10,7 @@ export default class API {
     static login(usn, psw) {
         return this.post(`auth/token`, {
             'username': usn,
+            'email': usn,
             'password': psw,
         })
         .then((r) => {

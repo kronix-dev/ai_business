@@ -1,4 +1,4 @@
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Tabs, Typography } from "antd";
 import * as React from "react";
 import { dataDisplayItemDto } from "./dto";
 import KModal from "./modal";
@@ -71,6 +71,8 @@ function GetComponent({ data }) {
       return <TexTLabel data={data} />;
     case "table":
         return <KTable showCreate={data.value.showCreate} minHeight={"unset"} showHeader={true} columns={data.value.columns} rows={data.value.rows} tableMenu={data.tableMenu} />
+      case 'tab':
+        return <Tabs items={data.childen}/>
     default:
       return <></>;
   }
@@ -86,5 +88,3 @@ function TexTLabel({ data }) {
     </div>
   );
 }
-
-function TableView({ data }) {}

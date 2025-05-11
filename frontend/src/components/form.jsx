@@ -17,7 +17,9 @@ import * as React from "react";
 import { useForm, Controller } from "react-hook-form";
 export default function KForm({
   form,
-  onSubmit =()=>{alert("sd")},
+  onSubmit = () => {
+    alert("sd");
+  },
   submitText = "submit",
   onFormChange = () => {},
   showLabels = false,
@@ -53,10 +55,12 @@ export default function KForm({
               errors={errors}
               type={prop.type}
               data={prop}
-            />
+          defaultValues={defaultValues}
+              />
           </Form.Item>
         ) : (
           <GetInput
+          defaultValues={defaultValues}
             errors={errors}
             control={control}
             showLabels={showLabels}
@@ -69,9 +73,9 @@ export default function KForm({
       {showSubmitButton ? (
         <Button
           onClick={() => {
-            onSubmit(fieldData)
-            handleSubmit(onSubmit,(erros)=>{
-              alert(erros.root.message)
+            onSubmit(fieldData);
+            handleSubmit(onSubmit, (erros) => {
+              alert(erros.root.message);
             });
           }}
           type="primary"
@@ -83,30 +87,37 @@ export default function KForm({
   );
 }
 
-function GetInput({ type, data, showLabels, onChange, control, errors }) {
+function GetInput({ type, data, showLabels, onChange, control, errors, defaultValues }) {
   const InputType = () => {
     switch (type) {
       case "checkbox":
         return <KCheckbox data={data} onChange={onChange} />;
       case "pair":
         return (
-          <PairInput onChange={onChange} showLabels={showLabels} data={data} errors={errors} control={control} />
+          <PairInput
+            onChange={onChange}
+            showLabels={showLabels}
+            data={data}
+            errors={errors}
+            control={control}
+            defaultValues={defaultValues[data.name]}
+          />
         );
       case "date":
-        return <KDatePicker onChange={onChange} data={data} />;
+        return <KDatePicker onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
       case "text":
       case "number":
       case "email":
       case "password":
-        return <TextInput onChange={onChange} data={data} />;
+        return <TextInput onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
       case "textarea":
-        return <KTextArea onChange={onChange} data={data} />;
+        return <KTextArea onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
       case "autocomplete":
-        return <KAutoComplete onChange={onChange} data={data} />;
+        return <KAutoComplete onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
       case "select":
-        return <SelectInput onChange={onChange} data={data} />;
+        return <SelectInput onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
       case "multiple-select":
-        return <MultipleSelectInput onChange={onChange} data={data} />;
+        return <MultipleSelectInput onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
       case "row":
         return (
           <KRow
@@ -115,6 +126,7 @@ function GetInput({ type, data, showLabels, onChange, control, errors }) {
             control={control}
             errors={errors}
             showLabels={showLabels}
+            defaultValues={defaultValues}
           />
         );
       default:
@@ -126,24 +138,22 @@ function GetInput({ type, data, showLabels, onChange, control, errors }) {
     <div>
       <Controller
         name={data.name !== undefined ? data.name : "d" + Date.now().toString()}
-        
         control={control}
         {...data}
-        render={({ field: { value }, fieldState: {} }) => (
-          <InputType />
-        )}
+        render={({ field: { value }, fieldState: {} }) => <InputType />}
       />
     </div>
   );
 }
 
-function TextInput({ data, onChange = (e, v) => {} }) {
+function TextInput({ data, onChange = (e, v) => {}, defaultValues="" }) {
   return (
     <Input
       placeholder={data.placeholder}
       onChange={(v) => {
         onChange(data.name, v.target.value);
       }}
+      defaultValue={defaultValues}
       type={data.type}
       id={data.name}
       name={data.name}
@@ -165,7 +175,7 @@ function KCheckbox({ data, onChange }) {
     </Space>
   );
 }
-function KDatePicker({ data, onChange }) {
+function KDatePicker({ data, onChange ,defaultValues }) {
   return (
     <DatePicker
       style={{ width: "100%" }}
@@ -235,7 +245,7 @@ function KAutoComplete({ data, onChange = (e, v) => {} }) {
     />
   );
 }
-function KRow({ data, showLabels, onChange, control, errors }) {
+function KRow({ data, showLabels, onChange, control, errors, defaultValues }) {
   return (
     <Row>
       {data.children.map((item, key) => (
@@ -245,6 +255,7 @@ function KRow({ data, showLabels, onChange, control, errors }) {
               onChange={onChange}
               type={item.type}
               data={item}
+              defaultValues={defaultValues}
               errors={errors}
               control={control}
             />
@@ -255,7 +266,7 @@ function KRow({ data, showLabels, onChange, control, errors }) {
   );
 }
 
-function PairInput({ data, showLabels, onChange,control, errors }) {
+function PairInput({ data, showLabels, onChange, control, errors, defaultValues }) {
   const [count, setCount] = React.useState([{}]);
   const [, forceUpdate] = React.useState();
   const increment = () => {
@@ -291,6 +302,7 @@ function PairInput({ data, showLabels, onChange,control, errors }) {
               onChange={(e, v) => {
                 onDataChange(e, v, key);
               }}
+              defaultValues={defaultValues[key]}
               type={data.child.type}
               showLabels={showLabels}
               data={data.child}
