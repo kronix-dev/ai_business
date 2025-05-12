@@ -38,7 +38,7 @@ export default function LoginPage() {
               flex:1
             }}
           >
-            <h1 style={{margin:"auto"}}>Welcome to Inua Mwanamke</h1>
+            <h1 style={{margin:"auto"}}>Welcome to Tanroads Kigoma</h1>
             <div>
 
             </div>
@@ -49,7 +49,7 @@ export default function LoginPage() {
         <center>
 
         <img src="/vite.svg" style={{margin:"auto"}}/>
-        <Typography.Title level={3}>Inua Mwanamke</Typography.Title>
+        <Typography.Title level={3}>Tanroads Kigoma</Typography.Title>
         </center>
             <KForm showSubmitButton submitText="Sign in" showLabels={true} form={loginForm} onSubmit={login}/>
             <center>

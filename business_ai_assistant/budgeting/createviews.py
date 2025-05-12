@@ -37,6 +37,7 @@ class AddExpenditure(APIView):
                      amount=request.data['amount'],
                      description=request.data['description'],
                      status= "active",
+                     user= request.user,
                      expense_category = ExpensesCategory.objects.get(id=request.data['category']),
                      )
             rev.save()

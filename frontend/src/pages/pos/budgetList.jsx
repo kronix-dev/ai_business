@@ -239,6 +239,11 @@ export default function BudgetList({ columns = [], rows = [] }) {
           f["category"] = cats.filter((v) => v.id == f["category"]).name;
           p.push(formData);
           setData(p);
+          Budgeting.getBudgets().then((r) => {
+            if (typeof r.data === "object") {
+              setData(r.data);
+            }
+          });
         }}
       >
         <KForm
