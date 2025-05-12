@@ -71,8 +71,8 @@ function GetComponent({ data }) {
       return <TexTLabel data={data} />;
     case "table":
         return <KTable showCreate={data.value.showCreate} minHeight={"unset"} showHeader={true} columns={data.value.columns} rows={data.value.rows} tableMenu={data.tableMenu} />
-      case 'tab':
-        return <Tabs items={data.childen}/>
+      case 'tabs':
+        return <Tabs items={data.value}/>
     default:
       return <></>;
   }

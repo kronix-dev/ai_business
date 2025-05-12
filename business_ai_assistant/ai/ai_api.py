@@ -25,11 +25,14 @@ def budgetAssistance(budget, revenueTotal, expensesTotal):
             + " and making it better which can help my business. Here is the budget"
             + str(budget)
         )
-        + " and also here is my previous expenses totaled and my revenues were"
+        + " and also here is my previous expenses totaled "
+        + expensesTotal
+        + " tzs and my revenues were "
+        + revenueTotal
     )
 
 
-def overallBusinessAssistance(budget, revenueTotal, expensesTotal):
+def overallBusinessAssistance(budget, sales, expenses):
     return aiPost(
         " Hi i have this business i want you to analyse my income and expenses in relation "
         + "to my budget and suggest 5 imorovements that would grow the business. This is my current month budget "

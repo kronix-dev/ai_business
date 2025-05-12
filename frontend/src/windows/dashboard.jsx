@@ -6,7 +6,7 @@ import {
   QuestionCircleOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Col, Layout, Menu, Row, theme, Typography } from "antd";
+import { Breadcrumb, Col, Divider, Layout, Menu, Row, theme, Typography } from "antd";
 import SideMenu from "../components/menu";
 import { Outlet, useNavigate } from "react-router";
 import { AuthService } from "../services/auth";
@@ -27,7 +27,7 @@ const Dashboard = ({ sideMenuItems }) => {
     <Layout
       style={{ width: "100%", height: window.innerHeight, overflow: "auto" }}
     >
-      <Header style={{ position: "static" }}>
+      <Header style={{ position: "static", borderBottom:"1px solid #888"}}>
         <Row>
           <Col xs={8} md={2}>
             <div
@@ -53,7 +53,7 @@ const Dashboard = ({ sideMenuItems }) => {
               mode="horizontal"
               direction="rtl"
               defaultSelectedKeys={["2"]}
-              items={sideMenuItems}
+              items={[]}
             />
           </Col>
           <Col md={7}></Col>
@@ -62,6 +62,7 @@ const Dashboard = ({ sideMenuItems }) => {
               theme="dark"
               mode="horizontal"
               direction="rtl"
+              itemType="button"
               defaultSelectedKeys={["2"]}
               items={[
                 {
@@ -79,8 +80,7 @@ const Dashboard = ({ sideMenuItems }) => {
                   key: "community",
                   onClick: (e) => {
                     sessionStorage.setItem("token",null)
-                    AuthService.logout()
-                    nav("/login");
+                    nav("/");
                   },
                   type: "submenu",
                 },
@@ -92,8 +92,9 @@ const Dashboard = ({ sideMenuItems }) => {
       <Layout>
         <Sider
           width={300}
-          style={{ background: colorBgContainer, paddingTop: 10 }}
+          style={{ paddingTop: 10 }}
         >
+        <Divider style={{height:2}}/>
           <SideMenu items={sideMenuItems} />
         </Sider>
         <Layout style={{ padding: "0 2px 24px" }}>

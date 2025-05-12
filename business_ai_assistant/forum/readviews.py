@@ -45,7 +45,9 @@ class ReadCats(APIView):
         message = "successs"
         data = []
         try:
-            data = TopicCategory.objects.all()
+            for i in TopicCategory.objects.all():
+                data.append({"name": i.name, "id": i.id})
+
         except Exception as e:
             message = str(e)
             status = False

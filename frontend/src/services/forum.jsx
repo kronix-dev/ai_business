@@ -5,9 +5,12 @@ export default class ForumService{
         return API.get('forum/getTopics')
     }
     static createTopic(data){
-        return API.post('forum/listTopics',data)
+        return API.post('forum/createTopic',data)
     }
     static getComments(topicId){
-        return API.get(`forum/listComments/${topicId}`)
+        return API.get(`forum/getComments/${topicId}`)
+    }
+    static getCategories(){
+        return API.get('forum/getCategories')
     }
 }

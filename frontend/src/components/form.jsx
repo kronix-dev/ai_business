@@ -55,12 +55,12 @@ export default function KForm({
               errors={errors}
               type={prop.type}
               data={prop}
-          defaultValues={defaultValues}
-              />
+              defaultValues={defaultValues}
+            />
           </Form.Item>
         ) : (
           <GetInput
-          defaultValues={defaultValues}
+            defaultValues={defaultValues}
             errors={errors}
             control={control}
             showLabels={showLabels}
@@ -87,7 +87,15 @@ export default function KForm({
   );
 }
 
-function GetInput({ type, data, showLabels, onChange, control, errors, defaultValues }) {
+function GetInput({
+  type,
+  data,
+  showLabels,
+  onChange,
+  control,
+  errors,
+  defaultValues,
+}) {
   const InputType = () => {
     switch (type) {
       case "checkbox":
@@ -104,20 +112,56 @@ function GetInput({ type, data, showLabels, onChange, control, errors, defaultVa
           />
         );
       case "date":
-        return <KDatePicker onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
+        return (
+          <KDatePicker
+            onChange={onChange}
+            data={data}
+            defaultValues={defaultValues[data.name]}
+          />
+        );
       case "text":
       case "number":
       case "email":
       case "password":
-        return <TextInput onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
+        return (
+          <TextInput
+            onChange={onChange}
+            data={data}
+            defaultValues={defaultValues[data.name]}
+          />
+        );
       case "textarea":
-        return <KTextArea onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
+        return (
+          <KTextArea
+            onChange={onChange}
+            data={data}
+            defaultValues={defaultValues[data.name]}
+          />
+        );
       case "autocomplete":
-        return <KAutoComplete onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
+        return (
+          <KAutoComplete
+            onChange={onChange}
+            data={data}
+            defaultValues={defaultValues[data.name]}
+          />
+        );
       case "select":
-        return <SelectInput onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
+        return (
+          <SelectInput
+            onChange={onChange}
+            data={data}
+            defaultValues={defaultValues[data.name]}
+          />
+        );
       case "multiple-select":
-        return <MultipleSelectInput onChange={onChange} data={data} defaultValues={defaultValues[data.name]}/>;
+        return (
+          <MultipleSelectInput
+            onChange={onChange}
+            data={data}
+            defaultValues={defaultValues[data.name]}
+          />
+        );
       case "row":
         return (
           <KRow
@@ -146,7 +190,7 @@ function GetInput({ type, data, showLabels, onChange, control, errors, defaultVa
   );
 }
 
-function TextInput({ data, onChange = (e, v) => {}, defaultValues="" }) {
+function TextInput({ data, onChange = (e, v) => {}, defaultValues = "" }) {
   return (
     <Input
       placeholder={data.placeholder}
@@ -175,7 +219,7 @@ function KCheckbox({ data, onChange }) {
     </Space>
   );
 }
-function KDatePicker({ data, onChange ,defaultValues }) {
+function KDatePicker({ data, onChange, defaultValues }) {
   return (
     <DatePicker
       style={{ width: "100%" }}
@@ -266,7 +310,14 @@ function KRow({ data, showLabels, onChange, control, errors, defaultValues }) {
   );
 }
 
-function PairInput({ data, showLabels, onChange, control, errors, defaultValues }) {
+function PairInput({
+  data,
+  showLabels,
+  onChange,
+  control,
+  errors,
+  defaultValues,
+}) {
   const [count, setCount] = React.useState([{}]);
   const [, forceUpdate] = React.useState();
   const increment = () => {
@@ -302,7 +353,7 @@ function PairInput({ data, showLabels, onChange, control, errors, defaultValues 
               onChange={(e, v) => {
                 onDataChange(e, v, key);
               }}
-              defaultValues={defaultValues[key]}
+              defaultValues={defaultValues!==undefined && defaultValues.length>=key? defaultValues[key] : {}}
               type={data.child.type}
               showLabels={showLabels}
               data={data.child}

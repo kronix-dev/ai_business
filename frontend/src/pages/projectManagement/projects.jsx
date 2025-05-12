@@ -116,18 +116,8 @@ export default function ProjectList() {
           placeholder: "Start date",
           name: "start_date",
           grid: {
-            sm: 12,
-            md: 12,
-          },
-        },
-        {
-          type: "date",
-          placeholder: "End date",
-          name: "end_date",
-          readOnly: true,
-          grid: {
-            sm: 12,
-            md: 12,
+            sm: 24,
+            md: 24,
           },
         },
       ],

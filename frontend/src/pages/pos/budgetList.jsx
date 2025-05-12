@@ -9,7 +9,12 @@ import DataDisplay, {
   addComponent,
   DataDisplayModal,
 } from "../../components/dataDisplay";
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  AimOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+  HeatMapOutlined,
+} from "@ant-design/icons";
 export default function BudgetList({ columns = [], rows = [] }) {
   const [cats, setCats] = React.useState([]);
   const [data, setData] = React.useState([{}]);
@@ -115,20 +120,60 @@ export default function BudgetList({ columns = [], rows = [] }) {
   const getData = () => {
     let p = [];
     p.push({
-      ...addComponent("table", "Project name", {
-        rows: data[activeItem].items,
-        columns: [
-          {key:"description", title:"Description"},
-          {key:"amount", title:"Amount"}
-        ],
-        tableMenu: [],
-        showCreate: false
-      },{
-        xs:24, md:24
-      }),
+      ...addComponent(
+        "table",
+        "Project name",
+        {
+          rows: data[activeItem].items,
+          columns: [
+            { key: "description", title: "Description" },
+            { key: "amount", title: "Amount" },
+          ],
+          tableMenu: [],
+          showCreate: false,
+        },
+        {
+          xs: 24,
+          md: 24,
+        }
+      ),
     });
-    
-    return p;
+    let x = [];
+    x.push({
+      ...addComponent(
+        "table",
+        "Project name",
+        {
+          rows: data[activeItem].ai_items,
+          columns: [
+            { key: "description", title: "Description" },
+            { key: "amount", title: "Amount" },
+          ],
+          tableMenu: [],
+          showCreate: false,
+        },
+        {
+          xs: 24,
+          md: 24,
+        }
+      ),
+    });
+    let n = addComponent("tabs", "Menus", [
+      {
+        icon: <HeatMapOutlined />,
+        label: "My budget items",
+        children: [<DataDisplay data={p} />],
+        key: "0",
+      },
+      {
+        icon: <AimOutlined />,
+        label: "AI Suggestions",
+        children: [<DataDisplay data={p} />],
+        key: "1",
+      },
+    ]);
+
+    return [n];
   };
   React.useEffect(() => {
     getCats();

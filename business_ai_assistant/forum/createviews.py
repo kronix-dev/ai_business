@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from forum.models import Topic, Comment
+from forum.models import Topic, Comment, TopicCategory
 
 class AddTopic(APIView):
     def post(self,request):
@@ -14,7 +14,8 @@ class AddTopic(APIView):
             top = Topic(
                 title = data['title'],
                 description = data['description'],
-                created_by = request.user,
+                category  = TopicCategory.objects.get(id=data['category']),
+                created_by = request.user
             )
             top.save()
             status = True
