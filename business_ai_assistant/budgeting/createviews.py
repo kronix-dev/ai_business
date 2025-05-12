@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 
 from budgeting.models import RevenueCategory,ExpensesCategory,Revenues,Budget,BudgetCategory, BudgetItem,Variance,RevenueForecast,Expenses
 
+from ai import ai_api
 class AddRevenue(APIView):
     def post(self,request):
         status = 0
@@ -61,13 +62,30 @@ class AddBudgetView(APIView):
                      end_date=request.data['end_date'],
                      )
             rev.save()
+            revenue_total = 0
+            expense_total = 0
+            for i in Revenues.objects.all():
+                revenue_total = revenue_total + i.amount
+            
+            for i in Expenses.objects.filter():
+                expense_total = expense_total + i.amount
+            
+            
+            
+            j= 0
             for i in request.data['budget_items']:
+                j=j+1
                 bi = BudgetItem(budget = rev, 
                                 category= BudgetCategory.objects.get(id=i['category']),
                                 amount = i['amount'],
+                                type = "user_input",
                                 description = i['description']
                                 )
+                
                 bi.save()
+                buf =  ""
+            ai_api.budgetAssistance("", revenue_total, expense_total)
+            
             message = 'Budget created successfully'
         except Exception as e:
             message = str(e)

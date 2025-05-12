@@ -147,7 +147,7 @@ function BusinessProfileInit({onRefresh}) {
             <center>
               <Avatar style={{ height: 100, width: 100 }} size={"large"} />
               <Typography.Title style={{ textAlign: "center" }}>
-                Hello there {user.fname}, welcome to Tembowave
+                Hello there {user.fname}, welcome to Inua Mwanamke
               </Typography.Title>
               <Typography>
                 I am your business assistant, im here to help you on your
