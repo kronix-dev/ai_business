@@ -18,6 +18,7 @@ import {
 } from "antd";
 import Meta from "antd/es/card/Meta";
 import * as React from "react";
+import { MentorshipService } from "../../services/mentorship";
 
 export function MentorCard({ data = { score: "5" } }) {
   return (
@@ -45,9 +46,7 @@ export function MentorCard({ data = { score: "5" } }) {
         <MentorDataDisplay
           icon={<FileOutlined />}
           title={"Qualifications"}
-          value={
-            data.mentor.qualifications.join(", ")
-          }
+          value={data.mentor.qualifications.join(", ")}
         />
         <MentorDataDisplay
           icon={<BulbOutlined />}
@@ -106,5 +105,42 @@ function MentorDataDisplay({ icon, title, value }) {
       </Typography.Paragraph>
       <Typography>{value}</Typography>
     </Space>
+  );
+}
+
+export function UserMentorshipRequest({ request, user, callback = () => {} }) {
+  const approve = (stat) => {
+    MentorshipService.acceptRequest(request, stat).then((e) => {});
+  };
+  return (
+    <div>
+      <Space direction="horizontal" align="start">
+        <div style={{ position: "relative", top: 0 }}>{icon}</div>
+        <Typography.Paragraph style={{ minWidth: 130 }}>
+          <strong>{title}</strong> is requesting a mentorship help, Accept to
+          start mentoring
+        </Typography.Paragraph>
+        <div>
+          <Space direction="horizontal">
+            <Button
+              onClick={() => {
+                approve(true);
+              }}
+              type="primary"
+            >
+              Accept
+            </Button>
+            <Button
+              onClick={() => {
+                approve(false);
+              }}
+            >
+              Reject
+            </Button>
+          </Space>
+        </div>
+        <Typography>{value}</Typography>
+      </Space>
+    </div>
   );
 }

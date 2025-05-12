@@ -22,15 +22,20 @@ import MailList from "../pages/projectManagement/mailList";
 import AccountPage from "../pages/user/account";
 import TopicList from "../pages/forum/topicList";
 import TopicPage from "../pages/forum/topicView";
+import MentorRequest from "../pages/mentorship/requests";
 
 export default function Routes() {
   return useRoutes([
-    { path: "/", element: <LandingPage />, children:[
-        {element:<Navigate to={"login"}/>, path:"/"},
-        {element: <LoginPage/>, path:'login'},
-        {element: <SignupPage/>, path:'signup'},
-        {element: <ChooseRole/>, path:'default'}
-    ] },
+    {
+      path: "/",
+      element: <LandingPage />,
+      children: [
+        { element: <Navigate to={"login"} />, path: "/" },
+        { element: <LoginPage />, path: "login" },
+        { element: <SignupPage />, path: "signup" },
+        { element: <ChooseRole />, path: "default" },
+      ],
+    },
     {
       element: <Userdashboard />,
       path: "business_profile",
@@ -40,20 +45,20 @@ export default function Routes() {
         { element: <ExpensesList />, path: "expenses" },
         { element: <BudgetList />, path: "budgets" },
         { element: <MentorshipDashboard />, path: "mentorship" },
-        {element: <TopicList/>, path:"forum"},
-        {element: <TopicPage/>, path:"forum/topic/:topic"},
-        {element: <AccountPage/>, path:"account"},
+        { element: <TopicList />, path: "forum" },
+        { element: <TopicPage />, path: "forum/topic/:topic" },
+        { element: <AccountPage />, path: "account" },
         { element: <NotFound />, path: "*" },
       ],
     },
     {
-      path: 'project_management',
-      element: <ProjectDashboard/>,
-      children:[
-        {element: <ProjectList/>, path:"projects"},
-        {element: <MailList/>, path:"mail"},
-        {element: <NotFound />, path: "*" },
-      ]
+      path: "project_management",
+      element: <ProjectDashboard />,
+      children: [
+        { element: <ProjectList />, path: "projects" },
+        { element: <MailList />, path: "mail" },
+        { element: <NotFound />, path: "*" },
+      ],
     },
     {
       element: <Mentordashboard />,
@@ -62,6 +67,7 @@ export default function Routes() {
         { element: <MentorDashboardPage />, path: "dashboard" },
         { element: <RevenueList />, path: "revenues" },
         { element: <MenteeList />, path: "mentee" },
+        { element: <MentorRequest />, path: "requests" },
         { element: <NotFound />, path: "*" },
       ],
     },

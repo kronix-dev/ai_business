@@ -1,6 +1,6 @@
 import * as React from "react";
 import Dashboard from "./dashboard";
-import { BookOutlined, DashboardFilled, DashOutlined, QuestionCircleOutlined, UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
+import { BookOutlined, DashboardFilled, DashOutlined, QuestionCircleOutlined, UserAddOutlined, UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
 
 export default function Mentordashboard() {
@@ -20,6 +20,14 @@ export default function Mentordashboard() {
         key: "mentee",
         onClick: (e) => {
           nav("mentee");
+        },
+      },
+      {
+        icon: <UserAddOutlined />,
+        label: "Mentorship Requests",
+        key: "mentee",
+        onClick: (e) => {
+          nav("requests");
         },
       },
       {

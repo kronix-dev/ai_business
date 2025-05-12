@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from budgeting.models import RevenueCategory,ExpensesCategory,RevenueForecast,BudgetCategory,Budget,Expenses, Revenues
+from budgeting.models import RevenueCategory,ExpensesCategory,RevenueForecast,BudgetCategory,Budget,Expenses, Revenues,BudgetItem
 
 @admin.register(RevenueCategory)
 class RevenueCatAdmin(admin.ModelAdmin):
@@ -29,5 +29,9 @@ class RevenueForecastAdmin(admin.ModelAdmin):
     list_display = ['id', 'budget', 'amount','description','date']
 
 @admin.register(Budget)
-class Budget(admin.ModelAdmin):
-    list_display= ['id',]
+class BudgetView(admin.ModelAdmin):
+    list_display= ['id','name']
+    
+@admin.register(BudgetItem)
+class BudgetItem(admin.ModelAdmin):
+    list_display= ['id','description']

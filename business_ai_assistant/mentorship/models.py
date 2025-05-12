@@ -27,6 +27,7 @@ class Match(models.Model):
     reasons = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_accepted = models.BooleanField(default=False)
+    has_acted = models.BooleanField(default=False)
     accepted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):

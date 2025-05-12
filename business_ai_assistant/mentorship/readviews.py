@@ -4,7 +4,9 @@ from rest_framework.views import APIView
 import json
 from types import SimpleNamespace
 from ai.ai_api import mentorMatching
-from mentorship.models import MentorProfile
+from mentorship.models import MentorProfile, Match
+
+from base.models import BusinessOwnerProfile
 
 
 class FindMentor(APIView):
@@ -39,7 +41,7 @@ class FindMentor(APIView):
             for i in match:
                 men = getMentor(MentorProfile.objects.get(id=i["mentor_id"]))
                 mentor = {
-                    "mentor":men ,
+                    "mentor": men,
                     "reason": i["reason"],
                     "score": i["score"],
                 }
@@ -64,18 +66,66 @@ class GetMyProfileView(APIView):
     def get(self, request):
         status = True
         message = "ok"
-        pf = {}
+        pf = []
         try:
-            pf = getMentor(MentorProfile.objects.get(user=request.user))
+            pf = getMentor(
+                MentorProfile.objects.get(
+                    user=request.user,
+                )
+            )
         except Exception as e:
             message = str(e)
             status = False
         return Response({"hasProfile": status, "message": message, "data": pf})
 
 
+class GetMatchRequests(APIView):
+    def get(self, request):
+        status = True
+        message = "ok"
+        pf = {}
+        data = []
+        try:
+            pf = Match.objects.filter(
+                mentor=MentorProfile.objects.get(user=request.user), has_acted=False
+            )
+            for i in pf:
+                data.append(
+                    {
+                        "business_name": i.owner.business_name,
+                        "match_id": i.id,
+                    }
+                )
+        except Exception as e:
+            message = str(e)
+            status = False
+        return Response({"status": status, "message": message, "data": data})
+
+
+class GetMyMentors(APIView):
+    def get(self, request):
+        status = True
+        message = "ok"
+
+        data = []
+        try:
+            pf = Match.objects.filter(
+                mentor=Match.objects.get(
+                    owner=BusinessOwnerProfile.objects.get(user=request.user)
+                ),
+                has_acted=True,
+                is_accepted=True,
+            )
+            for i in pf:
+                data.append(getMentor(i.mentor))
+        except Exception as e:
+            message = str(e)
+            status = False
+        return Response({"hasProfile": status, "message": message, "data": data})
+
+
 def getMentor(p):
     pf = {}
-
     pf["bio"] = p.bio
     pf["availability"] = p.availability
     pf["area_expert"] = p.mentorship_areas
@@ -83,6 +133,7 @@ def getMentor(p):
     pf["skills"] = p.skills
     pf["qualifications"] = p.qualifications
     pf["experience"] = p.past_mentorship_experience
-    pf['fname'] = p.user.first_name
-    pf['lname'] = p.user.last_name
+    pf["fname"] = p.user.first_name
+    pf["lname"] = p.user.last_name
+    pf["id"] =p.id
     return pf

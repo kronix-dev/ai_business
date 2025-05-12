@@ -15,20 +15,24 @@ def aiPost(content):
         ],
         stream=False,
     )
-    return response.choices[0].message.content.replace("```json", "").replace("```", "")
-
+    v=  response.choices[0].message.content.replace("```json", "").replace("```", "")
+    print(v)
+    return v
 
 def budgetAssistance(budget, revenueTotal, expensesTotal):
+    print(budget)
+    print(revenueTotal)
+    print(expensesTotal)
     return (
         aiPost(
-            " i have this budget for my business i would like you to assist in refining it"
+            " Hi i have this ERP which is intergrated with you please provide a json answer to this question. i have this budget for my business i would like you to assist in refining it"
             + " and making it better which can help my business. Here is the budget"
             + str(budget)
         )
         + " and also here is my previous expenses totaled "
         + expensesTotal
         + " tzs and my revenues were "
-        + revenueTotal
+        + revenueTotal + ".Write your answer in json format for the refined budget suggestions with category,suggestion and amount fields in this format {'budget':[], 'recommendations':[]}. return only json without any other information just json "
     )
 
 

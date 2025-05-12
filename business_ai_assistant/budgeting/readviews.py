@@ -100,8 +100,16 @@ class BudgetListView(APIView):
                 p["start_date"] = i.start_date
                 p["end_date"] =i.end_date
                 p["items"] = []
-                for b in BudgetItem.objects.filter(budget=i):
+                for b in BudgetItem.objects.filter(budget=i, type='user_input'):
                     p["items"].append(
+                        {
+                            "category": b.category.name,
+                            "amount": b.amount,
+                            "description": b.description,
+                        }
+                    )
+                for b in BudgetItem.objects.filter(budget=i, type='user_input'):
+                    p["suggestion_items"].append(
                         {
                             "category": b.category.name,
                             "amount": b.amount,
