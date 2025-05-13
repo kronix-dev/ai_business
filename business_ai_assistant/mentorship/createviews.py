@@ -19,6 +19,7 @@ class CreateProfile(APIView):
                 industry_expertise=req["industry"],
                 availability=req["availability"],
                 mentoring_style="smooth",
+                skills = req['skills'],
                 past_mentorship_experience=req["experience"],
                 qualifications=req["qualifications"],
                 mentorship_areas=req["area_expert"],
