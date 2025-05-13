@@ -11,5 +11,5 @@ urlpatterns = [
     path("sendRequest", createviews.MatchMentor().as_view()),
     path("acceptRequest", createviews.AcceptMentorship().as_view()),
     path("myMentors", readviews.GetMyMentors().as_view()),
-    path("myMentees", readviews.GetMyMentees().as_view),
+    path("myMentees", readviews.GetMyMentees().as_view()),
 ]
