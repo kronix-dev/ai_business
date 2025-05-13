@@ -8,8 +8,8 @@ urlpatterns = [
     path("createProfile", createviews.CreateProfile.as_view()),
     path("getProfile", readviews.GetMyProfileView.as_view()),
     path("getMentorshipRequest", readviews.GetMatchRequests.as_view()),
-    path("requestMentorship", createviews.MatchMentor().as_view()),
-    path("acceptRequest", createviews.AcceptMentorship().as_view()),
-    path("myMentors", readviews.GetMyMentors().as_view()),
-    path("myMentees", readviews.GetMyMentees().as_view()),
+    path("requestMentorship", createviews.MatchMentor.as_view()),
+    path("acceptRequest", createviews.AcceptMentorship.as_view()),
+    path("myMentors", readviews.GetMyMentors.as_view()),
+    path("myMentees", readviews.GetMyMentees.as_view()),
 ]
