@@ -221,41 +221,6 @@ function BusinessDashboard() {
           value={"2"}
         />
       </Col>
-      <Col xs={24} md={8}>
-        <DashboardCard
-          avatar={<LineChartOutlined color="#000" />}
-          title={"Total expenditures"}
-          value={"24,000 TZS"}
-        />
-      </Col>
-      <Col xs={24} md={8}>
-        <DashboardCard
-          avatar={<BarChartOutlined color="#000" />}
-          title={"Past 7 days revenue"}
-          value={"24,000 TZS"}
-        />
-      </Col>
-      <Col xs={24} md={12}>
-        <Card style={{ marginTop: 4, marginRight: 4 }}>
-          <Typography>
-            <MessageOutlined />
-            &nbsp;<strong>AI Suggestions</strong>
-          </Typography>
-          <Alert
-            banner
-            type="info"
-            message={
-              <div>
-                <Typography>
-                  <strong>Monthly revenue suggestion</strong>
-                </Typography>
-                <Typography>Suggestion message</Typography>
-              </div>
-            }
-            closable={false}
-          ></Alert>
-        </Card>
-      </Col>
     </Row>
   );
 }

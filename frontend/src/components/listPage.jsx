@@ -10,14 +10,17 @@ export default function ListPage({
   tableMenu,
   childButtons = <></>,
   showCreate = true,
+  buttonText = "Create new"
 }) {
   return (
     <div>
       <Typography.Title level={4}>{title}</Typography.Title>
       <KTable
+        
         tableMenu={tableMenu}
         showCreate={showCreate}
         columns={columns}
+        buttonText={buttonText}
         rows={rows}
         childButtons={childButtons}
         onButtonClick={onAdd}

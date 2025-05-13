@@ -104,7 +104,7 @@ const Dashboard = ({ sideMenuItems }) => {
               padding: 24,
               margin: 0,
               minHeight: 280,
-              background: colorBgContainer,
+              background: "rgb(241, 241, 241)",
               borderRadius: borderRadiusLG,
             }}
           >

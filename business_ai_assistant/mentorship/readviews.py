@@ -109,13 +109,34 @@ class GetMyMentors(APIView):
 
         data = []
         try:
+            BO = BusinessOwnerProfile.objects.get(user=request.user)
             pf = Match.objects.filter(
-                mentor=Match.objects.get(
-                    owner=BusinessOwnerProfile.objects.get(user=request.user)
-                ),
+                owner=BO,
                 has_acted=True,
                 is_accepted=True,
             )
+            print(BO.business_name)
+            for i in pf:
+                data.append(getMentor(i.mentor))
+        except Exception as e:
+            message = str(e)
+            status = False
+        return Response({"hasProfile": status, "message": message, "data": data})
+
+class GetMyMentees(APIView):
+    def get(self, request):
+        status = True
+        message = "ok"
+
+        data = []
+        try:
+            BO = MentorProfile.objects.get(user=request.user)
+            pf = Match.objects.filter(
+                mentor=BO,
+                has_acted=True,
+                is_accepted=True,
+            )
+            print(BO.business_name)
             for i in pf:
                 data.append(getMentor(i.mentor))
         except Exception as e:
@@ -135,5 +156,7 @@ def getMentor(p):
     pf["experience"] = p.past_mentorship_experience
     pf["fname"] = p.user.first_name
     pf["lname"] = p.user.last_name
-    pf["id"] =p.id
+    pf["fullName"] = p.user.first_name + " " + p.user.last_name
+    pf["id"] = p.id
+    pf["userId"]= p.user.id
     return pf

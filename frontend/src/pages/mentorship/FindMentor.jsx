@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Divider, Typography, Row, Col } from "antd";
+import { Divider, Typography, Row, Col, Button } from "antd";
 import KForm from "../../components/form";
 import { MentorCard } from "./mentorComponents";
 import { Loading } from "../../components/loader";
 import { MentorshipService } from "../../services/mentorship";
-export default function FindMentor() {
+import { ArrowLeftOutlined } from "@ant-design/icons";
+export default function FindMentor({setView}) {
   const [show, setShow] = React.useState(true);
   const onSubmit = (dat) => {
     Loading.showLoader();
@@ -21,6 +22,7 @@ export default function FindMentor() {
     <div>
       {show && (
         <div>
+          <Button onClick={()=>{setView('')}} icon={<ArrowLeftOutlined/>}/>
           <Typography.Title level={4}>Find a mentor</Typography.Title>
           <Typography>Describe traits you prefer from your mentor</Typography>
           <KForm

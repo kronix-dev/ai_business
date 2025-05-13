@@ -1,5 +1,7 @@
 import React from "react";
 import {
+  ArrowLeftOutlined,
+  BackwardOutlined,
   DashboardOutlined,
   LaptopOutlined,
   MessageOutlined,
@@ -13,6 +15,7 @@ import {
   Button,
   Card,
   Col,
+  FloatButton,
   Input,
   Layout,
   Menu,
@@ -27,115 +30,39 @@ import SideMenu from "../../components/menu";
 import KForm from "../../components/form";
 import TextArea from "antd/es/input/TextArea";
 import FindMentor from "./FindMentor";
+import MentorList from "./mentorList";
+import Chatbox from "../../components/chatbox";
 const { Header, Content, Sider } = Layout;
-const MentorshipDashboard = ()=>{
-
-  return(
+const MentorshipDashboard = () => {
+  const [view, setView] = React.useState("");
+  const [mentor, setItem] = React.useState("");
+  return (
     <div>
-      <FindMentor/>
-      {/* <DashboardView/> */}
+      {view === "find" ? (
+        <FindMentor setView={setView} />
+      ) : view === "message" ? (
+        <MentorshipMessaging setView={setView} mentor={mentor} />
+      ) : (
+        <MentorList setView={setView} setItem={setItem} />
+      )}
     </div>
-  )
-}
-const DashboardView = ({}) => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-  const items = [
-    {
-      icon: <DashboardOutlined />,
-      label: "Dashboard",
-      key: "dashboard",
-      onClick: (e) => {
-        nav("mentee");
-      },
-    },
-    {
-      icon: <MessageOutlined />,
-      label: "Chat",
-      key: "chat",
-      onClick: (e) => {
-        nav("dashboard");
-      },
-    },
-    {
-      icon: <SettingOutlined />,
-      label: "Settings",
-      key: "settings",
-      onClick: (e) => {
-        nav("dashboard");
-      },
-    },
-  ];
+  );
+};
+const MentorshipMessaging = ({ setView, mentor }) => {
   return (
     <Row>
-      <Col xs={24} md={4}>
-        <SideMenu items={items} />
-      </Col>
-      <Col xs={24} md={20}>
-        <Content
-          style={{
-            overflow: "auto",
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
+      <Col xs={24} md={7}>
+        <Button
+          onClick={() => {
+            setView("");
           }}
-        >
-          <Outlet />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-            }}
-          >
-            <div
-              style={{
-                paddingTop: 6,
-                paddingBottom: 6,
-                paddingRight: 16,
-                paddingLeft: 16,
-                borderRadius: 20,
-              }}
-            >
-              <Card size="small">
-                <Typography>Hello</Typography>
-              </Card>
-            </div>
-          </div>{" "}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <div
-              style={{
-                paddingTop: 6,
-                paddingBottom: 6,
-                paddingRight: 16,
-                paddingLeft: 16,
-                borderRadius: 20,
-              }}
-            >
-              <Tag style={{borderTopLeftRadius:0}} title="Hello" color="success">
-              
-                <Typography style={{padding:10}}>Hello</Typography>
-              </Tag>
-              {/* </Card> */}
-            </div>
-          </div>
-        </Content>
-          <Space style={{width:"100%"}} size={"large"}>
-            <Space.Compact style={{width:"100%"}}>
-              <Input />
-              <Button type="primary">
-                <SendOutlined />    
-              </Button>
-            </Space.Compact>
-          </Space>
+          icon={<ArrowLeftOutlined />}
+          shape="circle"
+          type="primary"
+        />
+      </Col>
+      <Col xs={24} md={10}>
+        <Chatbox userName={mentor.fullName} chatHeight={window.innerHeight*0.68} userId={mentor.userId} />
       </Col>
     </Row>
   );

@@ -1,54 +1,51 @@
 import * as React from "react";
 import ListPage from "../../components/listPage";
-import { UserAddOutlined } from "@ant-design/icons";
-import { Avatar, Row,Col, Typography } from "antd";
-export default function MenteeList() {
+import KModal from "../../components/modal";
+import KForm from "../../components/form";
+import { CiCircleOutlined, MessageOutlined } from "@ant-design/icons";
+import { MentorshipService } from "../../services/mentorship";
+
+export default function MenteeList({setView, setItem}) {
+  const [data, setData] = React.useState([]);
+  const getMentees = () => {
+    MentorshipService.getMentees().then(r=>{
+        setData(r.data)
+    });
+  };
+  React.useEffect(() => {
+    getMentees();
+  }, []);
+
   return (
     <div>
       <ListPage
+        title="My mentees"
         columns={[
-          { key: "name", title: "Title", width: 270 },
-          {
-            key: "start_date",
-            title: "Start date",
-            align: "right",
-            defaultSortOrder: "descend",
-            sorter: (a, b) => a.age - b.age,
-          },
-          
+            { key: "id", title: "Id", width: 50 },
+            { key: "fname", title: "Name"},
+            {key: "", title:""},
         ]}
-        titlee={"My Mentees"}
-        showAdd={false}
-        onAdd={() => {
-          forceUpdate({});
-        }}
-        rows={[
+        showCreate={false}
+        rows={data}
+        tableMenu={[
           {
-            id: 1,
-            name: <UserCard />,
-            start_date: 1,
-            end_date: 1,
+            label: "Consult",
+            icon: <MessageOutlined />,
+            key: 0,
+            onClick: (o) => {
+                setView("message")
+                setItem(o)
+            },
           },
           {
-            id: 1,
-            name: <UserCard />,
-            start_date: 1,
-            end_date: 1,
+            label: "End mentorship",
+            icon: <CiCircleOutlined />,
+            key: 0,
+            onClick: () => {},
           },
         ]}
       />
+      ;
     </div>
   );
 }
-const UserCard = () => {
-  return (
-    <Row>
-        <Col xs={6}>
-      <Avatar src="/images/ic1.png" style={{backgroundColor:"#adadad", height:50, width:50}} size={"large"} />
-        </Col>
-        <Col xs={18}>
-            <Typography><strong>Hassan Said</strong></Typography>
-        </Col>
-    </Row>
-  );
-};

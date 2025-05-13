@@ -19,4 +19,7 @@ export class MentorshipService {
   static getMentors() {
     return API.get("mentorship/myMentors");
   }
+  static getMentees() {
+    return API.get("mentorship/myMentees");
+  }
 }

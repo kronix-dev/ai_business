@@ -2,13 +2,15 @@ import * as React from "react";
 import ListPage from "../../components/listPage";
 import KModal from "../../components/modal";
 import KForm from "../../components/form";
-import { MessageOutlined } from "@ant-design/icons";
+import { CiCircleOutlined, MessageOutlined } from "@ant-design/icons";
 import { MentorshipService } from "../../services/mentorship";
 
-export default function MentorList() {
+export default function MentorList({setView, setItem}) {
   const [data, setData] = React.useState([]);
   const getMentors = () => {
-    MentorshipService.getMentors();
+    MentorshipService.getMentors().then(r=>{
+        setData(r.data)
+    });
   };
   React.useEffect(() => {
     getMentors();
@@ -18,13 +20,29 @@ export default function MentorList() {
     <div>
       <ListPage
         title="My mentors"
-        showCreate={false}
-        columns={[]}
+        columns={[
+            { key: "id", title: "Id", width: 50 },
+            { key: "fname", title: "Name"},
+            {key: "", title:""},
+        ]}
+        buttonText="Find a mentor"
+        onAdd={()=>{
+            setView('find')
+        }}
         rows={data}
         tableMenu={[
           {
             label: "Consult",
             icon: <MessageOutlined />,
+            key: 0,
+            onClick: (o) => {
+                setView("message")
+                setItem(o)
+            },
+          },
+          {
+            label: "End mentorship",
+            icon: <CiCircleOutlined />,
             key: 0,
             onClick: () => {},
           },

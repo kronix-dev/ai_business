@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Alert, Avatar, Button, Card, Col, Row, Typography } from "antd";
+import { Alert, Avatar, Button, Card, Col, Divider, Row, Typography } from "antd";
 import { useUserContext } from "../../controllers/userContext";
 import KModal from "../../components/modal";
 import KForm from "../../components/form";
@@ -11,39 +11,42 @@ import {
 } from "@ant-design/icons";
 import BusinessService from "../../services/business";
 export default function BusinessOwnerDashboard() {
-    const {business, setBusiness} = useUserContext()
-    const [hasProfile, setHas] = React.useState(0)
-    const getProfile = ()=>{
-      BusinessService.getProfile().then((r)=>{
-        if(r.hasProfile){
-            setBusiness( r.data)
-            setHas(1)
-        }
-        else{
-            setHas(2)
-        }
-    })
-    }
+  const { business, setBusiness } = useUserContext();
+  const [hasProfile, setHas] = React.useState(0);
+  const getProfile = () => {
+    BusinessService.getProfile().then((r) => {
+      if (r.hasProfile) {
+        setBusiness(r.data);
+        setHas(1);
+      } else {
+        setHas(2);
+      }
+    });
+  };
   React.useEffect(() => {
-    getProfile()
+    getProfile();
   }, []);
   return (
     <div>
-      {hasProfile===1?<BusinessDashboard />:hasProfile===2?<BusinessProfileInit onRefresh={getProfile}/>:null}
+      {hasProfile === 1 ? (
+        <BusinessDashboard />
+      ) : hasProfile === 2 ? (
+        <BusinessProfileInit onRefresh={getProfile} />
+      ) : null}
     </div>
   );
 }
 
-function BusinessProfileInit({onRefresh}) {
+function BusinessProfileInit({ onRefresh }) {
   const { user } = useUserContext();
   const [open, setOpen] = React.useState();
   const [cats, setCats] = React.useState([]);
   const [data, setData] = React.useState({});
-  const onCreate = ()=>{
-    BusinessService.createProfile(data)
-    onRefresh()
-    setOpen(false)
-  }
+  const onCreate = () => {
+    BusinessService.createProfile(data);
+    onRefresh();
+    setOpen(false);
+  };
   const businessProfileForm = [
     {
       type: "row",
@@ -126,7 +129,7 @@ function BusinessProfileInit({onRefresh}) {
       type: "multiple-select",
       placeholder: "Goals",
       name: "goals",
-      options:[],
+      options: [],
     },
   ];
   const onChange = (d) => {
@@ -168,7 +171,6 @@ function BusinessProfileInit({onRefresh}) {
       </Row>
       <KModal
         okText="save"
-    
         title="Tell us about your business"
         open={open}
         setOpen={setOpen}
@@ -232,12 +234,14 @@ function BusinessDashboard() {
           value={"24,000 TZS"}
         />
       </Col>
-      <Col xs={24} md={12}>
+      <Col xs={24}></Col>
+      <Col xs={24} md={24}>
         <Card style={{ marginTop: 4, marginRight: 4 }}>
           <Typography>
             <MessageOutlined />
             &nbsp;<strong>AI Suggestions</strong>
           </Typography>
+          <Divider/>
           <Alert
             banner
             type="info"

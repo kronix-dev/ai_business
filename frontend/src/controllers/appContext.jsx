@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 const UserContext = createContext();
-export const AppUserContext = ({ children }) => {
+export const AppContext = ({ children }) => {
   const [app, setApp] = React.useState({
     name: "Acsolar",
     desription: "",
@@ -26,6 +26,6 @@ export const AppUserContext = ({ children }) => {
     </UserContext.Provider>
   );
 };
-export const useUserContext = () => {
+export const useAppContext = () => {
   return useContext(UserContext);
 };
