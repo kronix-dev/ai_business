@@ -23,6 +23,6 @@ export class MentorshipService {
     return API.get("mentorship/myMentees");
   }
   static requestMentorship(id) {
-    return API.get("mentorship/requestMentorship", { mentor: id });
+    return API.post("mentorship/requestMentorship", { mentor: id });
   }
 }
