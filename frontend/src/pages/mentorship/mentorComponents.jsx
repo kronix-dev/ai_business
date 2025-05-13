@@ -20,7 +20,13 @@ import Meta from "antd/es/card/Meta";
 import * as React from "react";
 import { MentorshipService } from "../../services/mentorship";
 
-export function MentorCard({ data = { score: "5" } }) {
+export function MentorCard({ onSendRequest = ()=>{}, data = { score: "5" } }) {
+  const onRequest = () => {
+    MentorshipService.requestMentorship(data.mentor.id).then(r=>{
+      alert(r.message);
+      onSendRequest();
+    });
+  };
   return (
     <Card style={{ margin: 3 }}>
       <div>
@@ -88,7 +94,7 @@ export function MentorCard({ data = { score: "5" } }) {
         </Row>
       </div>
       <div>
-        <Button shape="round" type="primary" block>
+        <Button shape="round" type="primary" onClick={onRequest} block>
           Request mentorship
         </Button>
       </div>

@@ -7,6 +7,7 @@ import { MentorshipService } from "../../services/mentorship";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 export default function FindMentor({setView}) {
   const [show, setShow] = React.useState(true);
+  const [searchResults, setResults] = React.useState([]);
   const onSubmit = (dat) => {
     Loading.showLoader();
     MentorshipService.matchMentor(dat).then((r) => {
@@ -17,12 +18,11 @@ export default function FindMentor({setView}) {
     });
   };
 
-  const [searchResults, setResults] = React.useState([]);
   return (
     <div>
+      <Button onClick={()=>{setView('')}} icon={<ArrowLeftOutlined/>}/>
       {show && (
         <div>
-          <Button onClick={()=>{setView('')}} icon={<ArrowLeftOutlined/>}/>
           <Typography.Title level={4}>Find a mentor</Typography.Title>
           <Typography>Describe traits you prefer from your mentor</Typography>
           <KForm
@@ -37,9 +37,13 @@ export default function FindMentor({setView}) {
       )}
       <Typography.Title level={4}>Results</Typography.Title>
       <Row>
-        {searchResults.map((prop) => (
+        {searchResults.map((prop,key) => (
           <Col md={8}>
-            <MentorCard data={prop} />
+            <MentorCard data={prop} onSendRequest={()=>{
+              let p = searchResults
+              p.splice(key)
+              setResults(p)
+            }} />
           </Col>
         ))}
       </Row>

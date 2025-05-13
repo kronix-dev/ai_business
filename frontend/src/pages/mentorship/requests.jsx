@@ -1,6 +1,6 @@
 import * as React from "react";
 import KTable from "../../components/table";
-import { Row, Col } from "antd";
+import { Row, Col, Space } from "antd";
 import { UserMentorshipRequest } from "./mentorComponents";
 
 export default function MentorRequest() {
@@ -9,16 +9,17 @@ export default function MentorRequest() {
   return (
     <Row>
       <Col xs={24} md={4}></Col>
-      <Col xs={24} md={4}>
+      <Col xs={24} md={16}>
         <KTable
           showHeader={false}
           hoverable={false}
+          showCreate={false}
           onButtonClick={() => {
             setOpen(true);
           }}
           SearchComponent={() => <Space direction="horizontal"></Space>}
           columns={[{ key: "id", title: "" }]}
-          rows={topics.map((prop) => ({
+          rows={request.map((prop) => ({
             id: (
               <UserMentorshipRequest
                 user={prop.business_name}

@@ -22,4 +22,7 @@ export class MentorshipService {
   static getMentees() {
     return API.get("mentorship/myMentees");
   }
+  static requestMentorship(id) {
+    return API.get("mentorship/request", { mentor: id });
+  }
 }
