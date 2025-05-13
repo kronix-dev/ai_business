@@ -36,7 +36,7 @@ class CreateProfile(APIView):
 class MatchMentor(APIView):
     def post(self, request):
         req = request.data
-        message = "ok"
+        message = "Request sent successfully"
         status = True
         try:
             mt = Match(
