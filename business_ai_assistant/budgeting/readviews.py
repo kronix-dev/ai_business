@@ -100,6 +100,7 @@ class BudgetListView(APIView):
                 p["start_date"] = i.start_date
                 p["end_date"] =i.end_date
                 p["items"] = []
+                p["suggestion_items"]= []
                 for b in BudgetItem.objects.filter(budget=i, type='user_input'):
                     p["items"].append(
                         {

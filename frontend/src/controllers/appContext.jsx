@@ -1,15 +1,10 @@
 import React, { createContext, useContext } from "react";
 const UserContext = createContext();
 export const AppContext = ({ children }) => {
-  const [app, setApp] = React.useState({
-    name: "Acsolar",
-    desription: "",
-    logo: "uploads/acsolar.png",
-    wallpaper: "uploads/wall.png",
-    navbar: "sidebar",
-  });
+  const [api, setApi] = React.useState();
   const [user, setUser] = React.useState({});
   const [business, setBusiness] = React.useState({});
+  
   return (
     <UserContext.Provider
       value={{

@@ -1,2 +1,3 @@
 venv/
 *.pyc
+business_ai_assistant/manage.py

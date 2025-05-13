@@ -19,7 +19,7 @@ class CreateProfile(APIView):
                 industry_expertise=req["industry"],
                 availability=req["availability"],
                 mentoring_style="smooth",
-                skills = req['skills'],
+                skills=req["skills"],
                 past_mentorship_experience=req["experience"],
                 qualifications=req["qualifications"],
                 mentorship_areas=req["area_expert"],
@@ -41,7 +41,9 @@ class MatchMentor(APIView):
         try:
             mt = Match(
                 mentor=MentorProfile.objects.get(id=req["mentor"]),
-                owner=BusinessOwnerProfile.objects.get(user=request.user),
+                owner=BusinessOwnerProfile.objects.get(
+                    user=User.objects.get(id=request.user.id)
+                ),
                 is_accepted=False,
             )
             mt.save()
