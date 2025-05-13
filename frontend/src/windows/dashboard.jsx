@@ -43,7 +43,7 @@ const Dashboard = ({ sideMenuItems }) => {
               <Typography
                 style={{ fontSize: 17, fontWeight: "bold", color: "#fff" }}
               >
-                Tanroads Kigoma
+                Inua Mwanamke
               </Typography>
             </div>
           </Col>
