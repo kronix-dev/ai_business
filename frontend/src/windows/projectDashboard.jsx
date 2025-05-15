@@ -20,7 +20,7 @@ import {
 import { useNavigate } from "react-router";
 import ProjectList from "../pages/projectManagement/projects";
 
-export default function ProjectDashboard() {
+export default function ProjectDashboard({s=false}) {
   let nav = useNavigate();
   const items = [
     {
@@ -48,9 +48,27 @@ export default function ProjectDashboard() {
       },
     },
   ];
+  const iitems = [
+    {
+      icon: <MoneyCollectTwoTone />,
+      label: "Projects",
+      key: "projects",
+      onClick: (e) => {
+        nav("Projects");
+      },
+    },
+    {
+      icon: <LogoutOutlined color="#f00" />,
+      label: "Log out",
+      key: "community",
+      onClick: (e) => {
+        nav("elearn");
+      },
+    },
+  ];
   return (
     <div>
-      <Dashboard sideMenuItems={items} />
+      <Dashboard sideMenuItems={s?iitems:items} />
     </div>
   );
 }

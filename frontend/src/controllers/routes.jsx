@@ -23,6 +23,7 @@ import AccountPage from "../pages/user/account";
 import TopicList from "../pages/forum/topicList";
 import TopicPage from "../pages/forum/topicView";
 import MentorRequest from "../pages/mentorship/requests";
+import ProjectListReadOnly from "../pages/projectManagement/projects_view_only";
 
 export default function Routes() {
   return useRoutes([
@@ -56,7 +57,17 @@ export default function Routes() {
       element: <ProjectDashboard />,
       children: [
         { element: <ProjectList />, path: "projects" },
+        { element: <AccountPage />, path: "account" },
         { element: <MailList />, path: "mail" },
+        { element: <NotFound />, path: "*" },
+      ],
+    },
+    {
+      path: "project_management_view",
+      element: <ProjectDashboard s={true} />,
+      children: [
+        { element: <ProjectListReadOnly />, path: "projects" },
+        { element: <AccountPage />, path: "account" },
         { element: <NotFound />, path: "*" },
       ],
     },

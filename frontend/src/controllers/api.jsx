@@ -18,14 +18,14 @@ export default class API {
         this.showErrorNotification("Login failed: ");
         if (r.access !== undefined) {
           sessionStorage.setItem("token", r.access);
-          return true;
+          return [true, r.user];
         } else {
-          return false;
+          return [false];
         }
       })
       .catch((e) => {
         this.showErrorNotification("Login failed: " + e.message);
-        return false;
+        return [false];
       });
   }
 

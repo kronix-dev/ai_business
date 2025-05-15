@@ -57,7 +57,7 @@ export default function SignupPage() {
           <div style={{ padding: "25%", paddingTop: "20%" }}>
             <center>
               <img src="/vite.svg" style={{ margin: "auto" }} />
-              <Typography.Title level={3}>Inua Mwanamke</Typography.Title>
+              <Typography.Title level={3}>Tanroads Kigoma</Typography.Title>
             </center>
             <KForm
               onSubmit={signUp}

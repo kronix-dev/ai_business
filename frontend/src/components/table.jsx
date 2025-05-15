@@ -126,7 +126,7 @@ const TableMenu = ({ data, menus, itemKey }) => {
   return (
     <div>
       <Dropdown
-        placement="bottomCenter"
+        placement="top"
         dropdownRender={() => (
           <Menu
             items={menus.map((prop) => ({

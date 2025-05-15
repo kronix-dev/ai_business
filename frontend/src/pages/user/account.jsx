@@ -13,6 +13,7 @@ export default function AccountPage() {
   return (
     <div>
       <Row>
+        <Col xs={24} md={9}></Col>
         <Col xs={24} md={6}>
           <Card>
             <center>
@@ -20,7 +21,7 @@ export default function AccountPage() {
               <Typography.Title level={4}>
                 {user.fname} {user.lname}
               </Typography.Title>
-              <Typography>Business Account</Typography>
+              <Typography>Project management Account</Typography>
             </center>
             <Divider />
             <Typography>
@@ -29,7 +30,7 @@ export default function AccountPage() {
             </Typography>
             <Typography>
               <strong>Username : </strong>
-              {user.username}
+              {user.email}
             </Typography>
             <Typography>
               <strong>Address : </strong>
@@ -39,13 +40,7 @@ export default function AccountPage() {
           </Card>
         </Col>
         <Col xs={24} md={18}>
-          <Card style={{ margin: 4 }}>
-            <Typography.Title level={4}>
-              Business details
-            </Typography.Title>
-            <BusinessProfile/>  
-            
-          </Card>
+          
         </Col>
       </Row>
       <ChangePassword show={showChangePassword} setShow={setShowChangePassword} />
