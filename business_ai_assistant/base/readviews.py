@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from base.models import BusinessCategory,BusinessOwnerProfile
-
+from budgeting.readviews import getAllExpenses,getAllSales,getMonthlyExpenses,getMonthSales
 class BusinessCatList(APIView):
     def get(self,request):
         data =[]
@@ -39,6 +39,10 @@ class BusinessProfile(APIView):
             data['other_chars'] = bp.preferred_mentor_characteristics
             data['skills'] = bp.skills
             data['qualifications']= bp.qualifications
+            data["monthRevenue"] = getMonthSales(request.user)
+            data["monthExpenses"] = getMonthlyExpenses(request.user)
+            data["totalExpenses"] = getAllExpenses(request.user)
+            data["totalRevenue"] = getAllSales(request.user)
             data['id'] = bp.id
             hasProfile =True
         except Exception as e:

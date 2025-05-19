@@ -73,6 +73,7 @@ class GetMyProfileView(APIView):
                     user=request.user,
                 )
             )
+            pf['mentees'] = 0
         except Exception as e:
             message = str(e)
             status = False
@@ -144,6 +145,9 @@ class GetMyMentees(APIView):
             status = False
         return Response({"hasProfile": status, "message": message, "data": data})
 
+class GetMessages(APIView):
+    def get(self, request):
+        status= True
 
 def getMentor(p):
     pf = {}
@@ -160,3 +164,5 @@ def getMentor(p):
     pf["id"] = p.id
     pf["userId"]= p.user.id
     return pf
+
+

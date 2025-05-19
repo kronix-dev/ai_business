@@ -10,4 +10,5 @@ export default class BusinessService{
     static getIndustries(){
         return API.get('base/listIndustries')
     }
+    
 }

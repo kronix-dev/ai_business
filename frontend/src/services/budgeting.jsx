@@ -28,4 +28,7 @@ export default class Budgeting{
     static createBudget(data){
         return API.post('budgeting/addBudget',data)
     }
+    static getSummary(){
+        return API.get(`budgeting/getSummary`)
+    }
 }

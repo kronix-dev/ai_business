@@ -30,9 +30,18 @@ class ReadComments(APIView):
         data = []
 
         try:
-            data = Comment.objects.filter(
+            r = Comment.objects.filter(
                 topic=Topic.objects.get(id=request.data["topic"])
             )
+            for i in r:
+                data.append(
+                    {
+                        "message": i.comment,
+                        "commenter": i.created_by.first_name
+                        + " "
+                        + i.created_by.last_name,
+                    }
+                )
         except Exception as e:
             message = str(e)
             status = False

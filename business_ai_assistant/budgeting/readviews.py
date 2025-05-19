@@ -23,7 +23,7 @@ class RevenueListView(APIView):
         message = "ok"
         data = []
         try:
-            for i in Revenues.objects.all():
+            for i in Revenues.objects.filter(user=request.user):
                 data.append(
                     {
                         "category": i.revenue_category.name,
@@ -58,7 +58,7 @@ class ExpenseListView(APIView):
         message = "ok"
         data = []
         try:
-            for i in Expenses.objects.all():
+            for i in Expenses.objects.filter(user=request.user):
                 data.append(
                     {
                         "category": i.expense_category.name,
@@ -93,7 +93,7 @@ class BudgetListView(APIView):
         message = "ok"
         budgt = []
         try:
-            for i in Budget.objects.all():
+            for i in Budget.objects.filter(user=request.user):
                 p = {}
                 p["id"] = i.id
                 p["name"] = i.name
@@ -136,3 +136,33 @@ class BudgetCategoryListView(APIView):
             message = str(e)
 
         return Response({"data": data, "message": message, "status": status})
+
+def getMonthSales(business):
+    data =0
+    for i in Revenues.objects.filter(business=business):
+        data = data + i.amount
+        
+    return data
+
+def getAllSales(business):
+    data =0
+    for i in Revenues.objects.filter(business=business):
+        data = data + i.amount
+        
+    return data
+
+
+def getAllExpenses(business):
+    data =0
+    for i in Expenses.objects.filter(business=business):
+        data = data + i.amount
+        
+    return data
+
+def getMonthlyExpenses(business):
+    data =0
+    for i in Expenses.objects.filter(business=business):
+        data = data + i.amount
+        
+    return data
+    

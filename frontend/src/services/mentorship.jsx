@@ -25,4 +25,7 @@ export class MentorshipService {
   static requestMentorship(id) {
     return API.post("mentorship/requestMentorship", { mentor: id });
   }
+  static getSummary() {
+    return API.get(`budgeting/getSummary`);
+  }
 }
