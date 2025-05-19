@@ -96,9 +96,10 @@ export default function TopicList() {
                 </Space>
               )}
               columns={[{ key: "id", title: "" }]}
-              rows={topics.map((prop) => ({
+              rows={topics.map((prop,key) => ({
                 id: (
                   <TopicCard
+                    topicIndex= {key}
                     setTopic={setSelectedTopic}
                     title={prop.title}
                     setView={setView}
@@ -110,20 +111,20 @@ export default function TopicList() {
           </Col>
         </Row>
       ) : (
-        <TopicPage setView={setView} topic={selectedTopic} />
+        <TopicPage title={topics[selectedTopic].title} description={topics[selectedTopic].description} setView={setView} topic={topics[selectedTopic].id} />
       )}
     </div>
   );
 }
 
-export function TopicCard({ title, paragraph, id, setTopic, setView }) {
+export function TopicCard({ title, paragraph, id, setTopic, setView, topicIndex }) {
   let nav = useNavigate();
   return (
     <div>
       <Card
         hoverable
         onClick={() => {
-          setTopic(id);
+          setTopic(topicIndex);
           setView("topic");
           // nav("topic/" + id);
         }}

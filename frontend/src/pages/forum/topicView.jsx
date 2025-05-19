@@ -4,7 +4,7 @@ import KForm from "../../components/form";
 import ForumService from "../../services/forum";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 
-export default function TopicPage({topic, setView}) {
+export default function TopicPage({topic, setView, title, description}) {
   const [comments, setComments] = React.useState([""]);
   const getComments = ()=>{
     ForumService.getComments(topic).then(r=>{
@@ -13,13 +13,18 @@ export default function TopicPage({topic, setView}) {
   }
   const [comment, setComment] = React.useState([])
   const postComment = (e)=>{
-    ForumService.postComment(e)
+    ForumService.postComment(e).then(r=>{
+      getComments()
+    })
   }
+  React.useEffect(()=>{
+    getComments()
+  },[])
   return (
     <div>
       <ArrowLeftOutlined onClick={()=>{setView('list')}}/>
-      <Typography.Title>How to</Typography.Title>
-      <Typography>You just  </Typography>
+      <Typography.Title>{title}</Typography.Title>
+      <Typography>{description}</Typography>
       <Divider />
       {comments.map((prop) => (
         <CommentCard user={prop.commenter_name} message={prop.message}/>
