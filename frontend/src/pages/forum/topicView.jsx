@@ -2,8 +2,9 @@ import { Divider, Typography } from "antd";
 import * as React from "react";
 import KForm from "../../components/form";
 import ForumService from "../../services/forum";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
-export default function TopicPage({topic}) {
+export default function TopicPage({topic, setView}) {
   const [comments, setComments] = React.useState([""]);
   const getComments = ()=>{
     ForumService.getComments(topic).then(r=>{
@@ -16,6 +17,7 @@ export default function TopicPage({topic}) {
   }
   return (
     <div>
+      <ArrowLeftOutlined onClick={()=>{setView('list')}}/>
       <Typography.Title>How to</Typography.Title>
       <Typography>You just  </Typography>
       <Divider />

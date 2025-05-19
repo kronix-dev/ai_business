@@ -7,10 +7,13 @@ import ForumService from "../../services/forum";
 import KForm from "../../components/form";
 import KModal from "../../components/modal";
 import { useNavigate } from "react-router";
+import TopicPage from "./topicView";
 export default function TopicList() {
   const [topics, setTopics] = React.useState([]);
   const [cats, setCats] = React.useState([]);
   const [data, setData] = React.useState([]);
+  const [selectedTopic, setSelectedTopic] = React.useState(0);
+  const [view, setView] = React.useState("list");
   const [search, setSearch] = React.useState("");
   const getTopics = () => {
     ForumService.getTopics().then((r) => {
@@ -25,7 +28,7 @@ export default function TopicList() {
   const createTopic = () => {
     ForumService.createTopic(data).then((r) => {
       getTopics();
-      setOpen(false)
+      setOpen(false);
     });
   };
   const addTopicForm = [
@@ -46,60 +49,83 @@ export default function TopicList() {
     },
   ];
   React.useEffect(() => {
-    getCats()
+    getCats();
     getTopics();
   }, []);
   const [open, setOpen] = React.useState(false);
   return (
     <div>
-      <Row>
-        <Col xs={24} md={4}></Col>
-        <Col xs={6} md={16}>
-          <KModal title="Add a new topic" onOk={createTopic} setOpen={setOpen} open={open}>
-            <KForm form={addTopicForm} onFormChange={(s)=>{setData(s); }} />
-          </KModal>
+      {view === "list" ? (
+        <Row>
+          <Col xs={24} md={4}></Col>
+          <Col xs={6} md={16}>
+            <KModal
+              title="Add a new topic"
+              onOk={createTopic}
+              setOpen={setOpen}
+              open={open}
+            >
+              <KForm
+                form={addTopicForm}
+                onFormChange={(s) => {
+                  setData(s);
+                }}
+              />
+            </KModal>
 
-          <KTable
-            showHeader={false}
-            hoverable={false}
-            onButtonClick={() => {
-              setOpen(true);
-            }}
-            SearchComponent={() => (
-              <Space direction="horizontal">
-                <Space.Compact>
-                  <Input
-                    onChange={(e) => {
-                      setSearch(e.target.value);
-                    }}
-                    placeholder="Search"
+            <KTable
+              showHeader={false}
+              hoverable={false}
+              onButtonClick={() => {
+                setOpen(true);
+              }}
+              SearchComponent={() => (
+                <Space direction="horizontal">
+                  <Space.Compact>
+                    <Input
+                      onChange={(e) => {
+                        setSearch(e.target.value);
+                      }}
+                      placeholder="Search"
+                    />
+                    <Button type="primary">
+                      <SearchOutlined />
+                    </Button>
+                  </Space.Compact>
+                  <Space.Compact></Space.Compact>
+                </Space>
+              )}
+              columns={[{ key: "id", title: "" }]}
+              rows={topics.map((prop) => ({
+                id: (
+                  <TopicCard
+                    setTopic={setSelectedTopic}
+                    title={prop.title}
+                    setView={setView}
+                    paragraph={prop.description}
                   />
-                  <Button type="primary">
-                    <SearchOutlined />
-                  </Button>
-                </Space.Compact>
-                <Space.Compact></Space.Compact>
-              </Space>
-            )}
-            columns={[{ key: "id", title: "" }]}
-            rows={topics.map((prop) => ({
-              id: <TopicCard title={prop.title} paragraph={prop.description} />,
-            }))}
-          />
-        </Col>
-      </Row>
+                ),
+              }))}
+            />
+          </Col>
+        </Row>
+      ) : (
+        <TopicPage setView={setView} topic={selectedTopic} />
+      )}
     </div>
   );
 }
 
-export function TopicCard({ title, paragraph, id }) {
+export function TopicCard({ title, paragraph, id, setTopic, setView }) {
   let nav = useNavigate();
   return (
     <div>
       <Card
-      hoverable
+        hoverable
         onClick={() => {
-          nav("topic/" + id);
+          setTopic(id);
+          setView("topic");
+          // nav("topic/" + id);
         }}
       >
         <Meta
