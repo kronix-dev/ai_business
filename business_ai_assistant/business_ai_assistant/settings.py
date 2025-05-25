@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'base',
     'app',
     'forum', 
-    'elearning'
+    'elearning',
+    'ai'
 ]
 
 MIDDLEWARE = [

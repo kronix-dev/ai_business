@@ -98,10 +98,10 @@ class BudgetListView(APIView):
                 p["id"] = i.id
                 p["name"] = i.name
                 p["start_date"] = i.start_date
-                p["end_date"] =i.end_date
+                p["end_date"] = i.end_date
                 p["items"] = []
-                p["suggestion_items"]= []
-                for b in BudgetItem.objects.filter(budget=i, type='user_input'):
+                p["suggestion_items"] = []
+                for b in BudgetItem.objects.filter(budget=i, type="user_input"):
                     p["items"].append(
                         {
                             "category": b.category.name,
@@ -109,7 +109,7 @@ class BudgetListView(APIView):
                             "description": b.description,
                         }
                     )
-                for b in BudgetItem.objects.filter(budget=i, type='user_input'):
+                for b in BudgetItem.objects.filter(budget=i, type="user_input"):
                     p["suggestion_items"].append(
                         {
                             "category": b.category.name,
@@ -137,32 +137,76 @@ class BudgetCategoryListView(APIView):
 
         return Response({"data": data, "message": message, "status": status})
 
+
+class BusinessDashboard(APIView):
+    def get(self, request):
+        status = True
+        message = ""
+        data = {}
+        try:
+            data = {
+                "monthlyExpenses": getMonthlyExpenses(request.user),
+                "allExpenses": getAllExpenses(request.user),
+                "monthlySales": getMonthlyExpenses(request.user),
+                "allSales": getAllSales(request.user),
+            }
+        except Exception as e:
+            message = str(e)
+            status = False
+        return Response({"data": data, "status": status, "message": message})
+
+
 def getMonthSales(business):
-    data =0
-    for i in Revenues.objects.filter(business=business):
+    data = 0
+    for i in Revenues.objects.filter(user=business):
         data = data + i.amount
-        
+
     return data
 
+
 def getAllSales(business):
-    data =0
-    for i in Revenues.objects.filter(business=business):
+    data = 0
+    for i in Revenues.objects.filter(user=business):
         data = data + i.amount
-        
+
     return data
 
 
 def getAllExpenses(business):
-    data =0
-    for i in Expenses.objects.filter(business=business):
+    data = 0
+    for i in Expenses.objects.filter(user=business):
         data = data + i.amount
-        
+
     return data
 
+
 def getMonthlyExpenses(business):
-    data =0
-    for i in Expenses.objects.filter(business=business):
+    data = 0
+    for i in Expenses.objects.filter(user=business):
         data = data + i.amount
-        
+
     return data
-    
+
+
+def getCurrentBudgetText(user):
+    i = 1
+    b = Budget.objects.filter(created_by=user).last()
+    p = []
+    p["items"] = []
+    for b in BudgetItem.objects.filter(budget=i, type="user_input"):
+        p["items"].append(
+            {
+                "category": b.category.name,
+                "amount": b.amount,
+                "description": b.description,
+            }
+        )
+    for b in BudgetItem.objects.filter(budget=i, type="user_input"):
+        p["suggestion_items"].append(
+            {
+                "category": b.category.name,
+                "amount": b.amount,
+                "description": b.description,
+            }
+        )
+    return p

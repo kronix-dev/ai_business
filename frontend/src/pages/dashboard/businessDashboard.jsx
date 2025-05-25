@@ -1,5 +1,14 @@
 import * as React from "react";
-import { Alert, Avatar, Button, Card, Col, Divider, Row, Typography } from "antd";
+import {
+  Alert,
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Row,
+  Typography,
+} from "antd";
 import { useUserContext } from "../../controllers/userContext";
 import KModal from "../../components/modal";
 import KForm from "../../components/form";
@@ -10,6 +19,7 @@ import {
   MessageOutlined,
 } from "@ant-design/icons";
 import BusinessService from "../../services/business";
+import Budgeting from "../../services/budgeting";
 export default function BusinessOwnerDashboard() {
   const { business, setBusiness } = useUserContext();
   const [hasProfile, setHas] = React.useState(0);
@@ -190,48 +200,48 @@ function BusinessProfileInit({ onRefresh }) {
 }
 
 function BusinessDashboard() {
+  const [data, setData] = React.useState({});
+  const [ai, setAi] = React.useState([]);
+
+  const getData = ()=>{
+    Budgeting.getAISummary().then(r=>{
+      setAi(r.data)
+    })
+    Budgeting.getSummary().then(r=>{
+      setData(r.data)
+    })
+  }
+  React.useEffect(()=>{
+    getData()
+  },[])
   return (
     <Row>
-      <Col xs={24} md={8}>
+      <Col xs={24} md={6}>
         <DashboardCard
           avatar={<BarChartOutlined />}
           title={"Total revenue"}
-          value={"24,000 TZS"}
+          value={data.allSales}
         />
       </Col>
-      <Col xs={24} md={8}>
+      <Col xs={24} md={6}>
         <DashboardCard
           avatar={<LineChartOutlined color="#000" />}
           title={"Total expenditures"}
-          value={"24,000 TZS"}
+          value={data.allExpenses}
         />
       </Col>
-      <Col xs={24} md={8}>
+      <Col xs={24} md={6}>
         <DashboardCard
           avatar={<BarChartOutlined color="#000" />}
-          title={"Past 7 days revenue"}
-          value={"24,000 TZS"}
+          title={"Past 30 days revenue"}
+          value={data.monthlySales}
         />
       </Col>
-      <Col xs={24} md={8}>
+      <Col xs={24} md={6}>
         <DashboardCard
           avatar={<LineChartOutlined color="#000" />}
-          title={"Past 7 expenditures"}
-          value={"24,000 TZS"}
-        />
-      </Col>
-      <Col xs={24} md={8}>
-        <DashboardCard
-          avatar={<LineChartOutlined color="#000" />}
-          title={"Forecast weekly revenues"}
-          value={"24,000 TZS"}
-        />
-      </Col>
-      <Col xs={24} md={8}>
-        <DashboardCard
-          avatar={<BarChartOutlined color="#000" />}
-          title={"Forecast monthly revenues"}
-          value={"24,000 TZS"}
+          title={"Past 30 expenditures"}
+          value={data.monthlyExpenses}
         />
       </Col>
       <Col xs={24}></Col>
@@ -241,20 +251,22 @@ function BusinessDashboard() {
             <MessageOutlined />
             &nbsp;<strong>AI Suggestions</strong>
           </Typography>
-          <Divider/>
-          <Alert
-            banner
-            type="info"
-            message={
-              <div>
-                <Typography>
-                  <strong>Monthly revenue suggestion</strong>
-                </Typography>
-                <Typography>Suggestion message</Typography>
-              </div>
-            }
-            closable={false}
-          ></Alert>
+          <Divider />
+          {ai.map((prop) => (
+            <Alert
+              banner
+              type="info"
+              message={
+                <div>
+                  <Typography>
+                    <strong>Weekly AI suggestion</strong>
+                  </Typography>
+                  <Typography>{prop.message}</Typography>
+                </div>
+              }
+              closable={false}
+            ></Alert>
+          ))}
         </Card>
       </Col>
     </Row>

@@ -32,7 +32,7 @@ def budgetAssistance(budget, revenueTotal, expensesTotal):
         + " and also here is my previous expenses totaled "
         + expensesTotal
         + " tzs and my revenues were "
-        + revenueTotal + ".Write your answer in json format for the refined budget suggestions with category,suggestion and amount fields in this format {'budget':[], 'recommendations':[]}. return only json without any other information just json "
+        + revenueTotal + ".Please profivide your answer in json format for the refined budget suggestions with category,suggestion and amount fields in this format {'budget':[], 'recommendations':[]}. return only json format "
     )
 
 

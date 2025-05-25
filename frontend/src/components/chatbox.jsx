@@ -41,7 +41,7 @@ export default function Chatbox({ chatHeight = 500, userName, userId }) {
         <Meta
           avatar={<Avatar src="/images/ic2.png" shape="circle" />}
           title={userName}
-          description="Mentor"
+          description=""
         />
         <Divider />
       </div>
@@ -65,7 +65,7 @@ export default function Chatbox({ chatHeight = 500, userName, userId }) {
           }}
         >
           {messages.map((prop, key) =>
-            prop.mine ? (
+            !prop.mine ? (
               <MyBubble text={prop.message} />
             ) : (
               <OtherBubble text={prop.message} />

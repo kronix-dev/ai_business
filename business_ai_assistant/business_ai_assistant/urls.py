@@ -37,5 +37,6 @@ urlpatterns = [
     path("api/forum/", include("forum.urls")),
     path("api/mentorship/", include("mentorship.urls")),
     path("api/elearning/", include("elearning.urls")),
-    path("api/messaging/",include("chat.urls"))
+    path("api/messaging/",include("chat.urls")),
+    path("api/ai/",include("ai.urls"))
 ]

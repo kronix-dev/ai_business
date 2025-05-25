@@ -46,8 +46,9 @@ class BusinessProfile(APIView):
             data['id'] = bp.id
             hasProfile =True
         except Exception as e:
-            message = "user has no profile"
+            message = "user has no profile"+ str(e)
             hasProfile = False
+            
         
         return Response({
             'hasProfile':hasProfile,
