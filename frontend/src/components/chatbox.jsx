@@ -1,20 +1,40 @@
 import * as React from "react";
-import { Card, Typography, Tag, Space, Input, Button,Divider, Avatar } from "antd";
+import {
+  Card,
+  Typography,
+  Tag,
+  Space,
+  Input,
+  Button,
+  Divider,
+  Avatar,
+} from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
+import MessagingService from "../services/messaging";
 export default function Chatbox({ chatHeight = 500, userName, userId }) {
-  const [messages, setMessages] = React.useState([
-    { mine: true, message: "Hi" },
-    { mine: false, message: "Hello" },
-  ]);
+  const [messages, setMessages] = React.useState([]);
   const [, forceUpdate] = React.useState();
   const [typing, setTyping] = React.useState("");
   const sendMessage = () => {
-    let p = messages;
-    p.push({ mine: true, message: typing });
-    setMessages(p);
+    // let p = messages;
+    // p.push({ mine: true, message: typing });
+    // setMessages(p);
     forceUpdate({});
+    MessagingService.sendMessage({ userId: userId, message: typing }).then(
+      (r) => {
+        getMessages();
+      }
+    );
   };
+  const getMessages = () => {
+    MessagingService.getMessages(userId).then((r) => {
+      setMessages(r.data);
+    });
+  };
+  React.useEffect(() => {
+    getMessages();
+  }, []);
   return (
     <Card>
       <div>
