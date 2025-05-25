@@ -43,7 +43,7 @@ export default function Mentordashboard() {
       label: "eLearning",
       key: "eLearning",
       onClick: (e) => {
-        nav("elearn");
+        nav("elearning");
       },
     },
   ];

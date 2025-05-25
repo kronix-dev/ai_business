@@ -24,6 +24,8 @@ import TopicList from "../pages/forum/topicList";
 import TopicPage from "../pages/forum/topicView";
 import MentorRequest from "../pages/mentorship/requests";
 import ProjectListReadOnly from "../pages/projectManagement/projects_view_only";
+import Materials from "../pages/elearning/materials";
+import CreatorPanel from "../pages/elearning/creatorpanel";
 
 export default function Routes() {
   return useRoutes([
@@ -48,6 +50,7 @@ export default function Routes() {
         { element: <MentorshipDashboard />, path: "mentorship" },
         { element: <TopicList />, path: "forum" },
         { element: <TopicPage />, path: "forum/topic/:topic" },
+        { element: <Materials />, path: "elearning/materials" },
         { element: <AccountPage />, path: "account" },
         { element: <NotFound />, path: "*" },
       ],
@@ -78,6 +81,7 @@ export default function Routes() {
         { element: <MentorDashboardPage />, path: "dashboard" },
         { element: <RevenueList />, path: "revenues" },
         { element: <MenteeList />, path: "mentee" },
+        { element: <CreatorPanel />, path: "elearning" },
         { element: <MentorRequest />, path: "requests" },
         { element: <NotFound />, path: "*" },
       ],

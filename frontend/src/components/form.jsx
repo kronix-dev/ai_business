@@ -1,4 +1,4 @@
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import {
   AutoComplete,
   Button,
@@ -11,6 +11,7 @@ import {
   Select,
   Space,
   Typography,
+  Upload,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import * as React from "react";
@@ -173,6 +174,8 @@ function GetInput({
             defaultValues={defaultValues}
           />
         );
+      case "file":
+        return <FileUpload onChange={onChange} data={data} />;
       default:
         return <></>;
     }
@@ -353,7 +356,11 @@ function PairInput({
               onChange={(e, v) => {
                 onDataChange(e, v, key);
               }}
-              defaultValues={defaultValues!==undefined && defaultValues.length>=key? defaultValues[key] : {}}
+              defaultValues={
+                defaultValues !== undefined && defaultValues.length >= key
+                  ? defaultValues[key]
+                  : {}
+              }
               type={data.child.type}
               showLabels={showLabels}
               data={data.child}
@@ -382,6 +389,49 @@ function PairInput({
           <PlusOutlined />
         </Button>
       </Space>
+    </div>
+  );
+}
+
+function FileUpload({ data, onChange }) {
+  const handleFileChange = (info) => {
+    const { file } = info;
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        onChange(data.name, e.target.result);
+      };
+      reader.onerror = () => {
+        message.error("Failed to read the file.");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  return (
+    <div>
+      <Upload
+        previewFile
+        type="drag"
+        accept=".pdf"
+        onChange={handleFileChange}
+        onDownload={(e) => {}}
+        customRequest={(e) => {}}
+        showUploadList
+        beforeUpload={(e) => false}
+      >
+        <div
+          style={{
+            height: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          <UploadOutlined />
+          <Typography>Upload a file</Typography>
+        </div>
+      </Upload>
     </div>
   );
 }

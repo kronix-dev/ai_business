@@ -66,7 +66,7 @@ export default function Userdashboard() {
       label: "eLearning",
       key: "eLearning",
       onClick: (e) => {
-        nav("elearn");
+        nav("elearning/materials");
       },
     },
     {

@@ -14,7 +14,6 @@ export default function MenteeList({setView, setItem}) {
   };
   React.useEffect(() => {
     getMentees();
-    
   }, []);
 
   return (

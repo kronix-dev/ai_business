@@ -24,14 +24,14 @@ class ReadTopics(APIView):
 
 
 class ReadComments(APIView):
-    def get(self, request):
+    def get(self, request,**kwargs):
         status = (True,)
         message = "successs"
         data = []
 
         try:
             r = Comment.objects.filter(
-                topic=Topic.objects.get(id=request.data["topic"])
+                topic=Topic.objects.get(id=kwargs["topic"])
             )
             for i in r:
                 data.append(
@@ -50,8 +50,8 @@ class ReadComments(APIView):
 
 class ReadCats(APIView):
     def get(self, request):
-        status = (True,)
-        message = "successs"
+        status = True
+        message = "success"
         data = []
         try:
             for i in TopicCategory.objects.all():

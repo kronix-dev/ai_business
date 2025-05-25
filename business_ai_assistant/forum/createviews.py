@@ -39,6 +39,7 @@ class AddComments(APIView):
                 comment = data['comment'],
                 created_by = request.user
             )
+            com.save()
         except Exception as e:
             message = str(e)
             
