@@ -51,8 +51,8 @@ def overallBusinessAssistance(budget, sales, expenses):
         + str(sales)
         + ". And these were my expenses"
         + str(expenses)
-        + " and also here"
-        + " Return the response in json format of  list containing 5 improvements that should be done next month"
+        + "  list containing 5 improvements that should be done next month"
+        + " Return the response in json format of { suggestions: [{ description:''. title:''}] } "
     )
 
 

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.utils import timezone
 from datetime import timedelta
 
+import json
+
 # Create your views here.
 from .models import Suggestion
 from app.filemanager import base642file, file2base64
@@ -31,12 +33,15 @@ class GetSuggestions(APIView):
             d = overallBusinessAssistance(
                 str(getCurrentBudgetText(u)), getMonthSales(u), getMonthlyExpenses(u)
             )
+            dat = json.loads(d)
+            for i in dat:
+                s = Suggestion(
+                    title=i["title"], description=i["description"], user=request.user
+                )
+                s.save()
         d = Suggestion.objects.filter(user=request.user)
         for i in d:
             data.append({"description": i.description})
         return Response(
-            {
-                "data": data,
-                "message": message,
-            }
+            {"data": data, "message": message, "suggestion": json.loads(dat)}
         )
