@@ -93,7 +93,7 @@ class BudgetListView(APIView):
         message = "ok"
         budgt = []
         try:
-            for i in Budget.objects.filter(user=request.user):
+            for i in Budget.objects.filter(created_by=request.user):
                 p = {}
                 p["id"] = i.id
                 p["name"] = i.name
@@ -104,15 +104,15 @@ class BudgetListView(APIView):
                 for b in BudgetItem.objects.filter(budget=i, type="user_input"):
                     p["items"].append(
                         {
-                            "category": b.category.name,
+                            "category": b.category,
                             "amount": b.amount,
                             "description": b.description,
                         }
                     )
-                for b in BudgetItem.objects.filter(budget=i, type="user_input"):
+                for b in BudgetItem.objects.filter(budget=i, type="ai_suggestion"):
                     p["suggestion_items"].append(
                         {
-                            "category": b.category.name,
+                            "category": b.category,
                             "amount": b.amount,
                             "description": b.description,
                         }

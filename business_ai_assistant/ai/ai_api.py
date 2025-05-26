@@ -1,8 +1,10 @@
 from openai import OpenAI
+import regex
+import json
 
 
 def aiPost(content):
-    # print(content)
+    print(content)
     # return content
     client = OpenAI(
         api_key="sk-de07a81c164747aa87ed11f82cd062fb",
@@ -15,24 +17,28 @@ def aiPost(content):
         ],
         stream=False,
     )
-    v=  response.choices[0].message.content.replace("```json", "").replace("```", "")
-    print(v)
+    v = response.choices[0].message.content.replace("```json", "").replace("```", "")
+    v = extract_json(v)
+    data = []
+    for i in v:
+        data = i
+    print(data)
     return v
+
 
 def budgetAssistance(budget, revenueTotal, expensesTotal):
     print(budget)
     print(revenueTotal)
     print(expensesTotal)
-    return (
-        aiPost(
-            " Hi i have this ERP which is intergrated with you please provide a json answer to this question. i have this budget for my business i would like you to assist in refining it"
-            + " and making it better which can help my business. Here is the budget"
-            + str(budget)
-        )
+    return aiPost(
+        " Hi i have this ERP which is intergrated with you please provide a json answer to this question. i have this budget for my business i would like you to assist in refining it"
+        + " and making it better which can help my business. Here is the budget"
+        + str(budget)
         + " and also here is my previous expenses totaled "
-        + expensesTotal
-        + " tzs and my revenues were "
-        + revenueTotal + ".Please profivide your answer in json format for the refined budget suggestions with category,suggestion and amount fields in this format {'budget':[], 'recommendations':[]}. return only json format "
+        + str(expensesTotal)
+        + " Tzs and my revenues were "
+        + str(revenueTotal)
+        + "TZS .Strictly provide the response in json format in this format { recommendations: [{ suggestion: string,amount: number,title: string }] }."
     )
 
 
@@ -42,11 +48,11 @@ def overallBusinessAssistance(budget, sales, expenses):
         + "to my budget and suggest 5 imorovements that would grow the business. This is my current month budget "
         + budget
         + ". These were my sales "
-        + sales
+        + str(sales)
         + ". And these were my expenses"
         + str(expenses)
         + " and also here"
-        + " Return a json list containing 5 improvements that should be done next month"
+        + " Return the response in json format of  list containing 5 improvements that should be done next month"
     )
 
 
@@ -62,3 +68,42 @@ def mentorMatching(criteria, mentors):
         + ""
         + ". Please return a only a json list of mentor_id, reason for selecting the mentor and score of each mentor. just json with no explanations"
     )
+
+
+def parseJSON(text):
+    pattern = r"(\{(?:[^{}]|(?1))*\})"
+
+    matches = regex.findall(pattern, text)
+
+    # Try to parse and extract valid JSON
+    json_objects = []
+    for match in matches:
+        try:
+            json_objects.append(json.loads(match))
+        except json.JSONDecodeError:
+            pass  # skip invalid JSON
+
+
+def RawJSONDecoder(index):
+    class _RawJSONDecoder(json.JSONDecoder):
+        end = None
+
+        def decode(self, s, *_):
+            data, self.__class__.end = self.raw_decode(s, index)
+            return data
+
+    return _RawJSONDecoder
+
+
+def extract_json(s, index=0):
+    results = []
+    while (index := s.find("{", index)) != -1:
+        try:
+            decoder = RawJSONDecoder(index)
+            obj = json.loads(s, cls=decoder)
+            end = decoder.end
+            results.append(s[index:end])
+            index = end
+        except json.JSONDecodeError:
+            index += 1
+    return results

@@ -68,7 +68,7 @@ class BudgetCategory(models.Model):
 
 class BudgetItem(models.Model):
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE)
-    category = models.ForeignKey(BudgetCategory, on_delete=models.CASCADE)
+    category = models.CharField()
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     description = models.TextField(blank=True, null=True)
     type = models.CharField(

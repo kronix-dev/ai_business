@@ -75,6 +75,7 @@ class AddExpenditure(APIView):
 class AddBudgetView(APIView):
     def post(self, request):
         status = 0
+        aisug ={}
         message = ""
         ik = ""
         try:
@@ -108,7 +109,7 @@ class AddBudgetView(APIView):
                 buf = (
                     buf
                     + str(j)
-                    + ". Category: "
+                    + ". Title: "
                     + BudgetCategory.objects.get(id=i["category"]).name
                     + ", Description: "
                     + i["description"]
@@ -116,21 +117,23 @@ class AddBudgetView(APIView):
                     + str(i["amount"])
                     + " TZS. "
                 )
-            # message = ai_api.budgetAssistance(buf, str(revenue_total), str(expense_total))
-            # aisug = json.loads(ik)
+            ik = ai_api.budgetAssistance(buf, str(revenue_total), str(expense_total))
+            aisug = json.loads(ik[0])
 
-            # for i in aisug:
-            #     bi = BudgetItem(
-            #         budget=rev,
-            #         category=BudgetCategory.objects.get(name=i["category"]),
-            #         amount=i["amount"],
-            #         type="ai_suggestion",
-            #         description=i["suggestion"],
-            #     )
+            for i in aisug:
+                bi = BudgetItem(
+                    budget=rev,
+                    category=BudgetCategory.objects.get(name=i["title"]),
+                    amount=i["amount"],
+                    type="ai_suggestion",
+                    description=i["suggestion"],
+                )
             message = "Budget created successfully"
         except Exception as e:
             message = str(e)
-        return Response({"status": status, "message": message, "buf": buf, "res": ik})
+        return Response(
+            {"status": status, "message": message, "buf": buf, "res": ik, "sug": aisug}
+        )
 
 
 class AddRevenueCategory(APIView):
