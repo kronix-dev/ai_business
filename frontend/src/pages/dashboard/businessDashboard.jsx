@@ -259,9 +259,9 @@ function BusinessDashboard() {
               message={
                 <div>
                   <Typography>
-                    <strong>Weekly AI suggestion</strong>
+                    <strong>{prop.title}</strong>
                   </Typography>
-                  <Typography>{prop.message}</Typography>
+                  <Typography>{prop.description}</Typography>
                 </div>
               }
               closable={false}
